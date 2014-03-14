@@ -1,0 +1,16 @@
+<template name="dailytrafficreport">
+	<div class="row padding-10">
+		<div class="page-header">
+			<h2>Traffic Breakdown <small>For given time period</small></h2>
+		</div>
+		
+		<ul>
+		{{#each Totals}}
+			<li>{{date2}}</li>
+		{{/each}}		
+		</ul>
+		
+		<p>Done</p>
+		
+	</div>
+</template>

@@ -1,0 +1,38 @@
+<template name="userreport">
+	<div class="row padding-10">
+		<div class="page-header">
+			<h2>User Reports <small>For given time period</small></h2>
+		</div>
+		
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Local Traffic</th>
+					<th>On-Net Traffic</th>
+					<th>Off-Net Traffic</th>
+					<th>TOTALS</th>
+				</tr>	
+			</thead>
+			<tbody>
+			{{#each Totals}}
+				<tr>
+					<td><a href="/user/{{username}}">{{username}}</a></td>
+					<td>{{localTraffic}}</td>
+					<td>{{Onnet}}</td>
+					<td>{{Offnet}}</td>
+					<td>{{TotalTraffic}}</td>
+				</tr>
+			{{/each}}		
+				
+			
+		</table>
+		
+		
+		<ul>
+		</ul>
+		
+		<p>Done</p>
+		
+	</div>
+</template>
