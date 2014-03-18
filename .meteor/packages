@@ -8,3 +8,6 @@ insecure
 preserve-inputs
 bootstrap-3
 iron-router
+mini-models
+collection-helpers
+moment

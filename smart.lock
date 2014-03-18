@@ -3,7 +3,10 @@
   "dependencies": {
     "basePackages": {
       "bootstrap-3": {},
-      "iron-router": {}
+      "iron-router": {},
+      "mini-models": {},
+      "collection-helpers": {},
+      "moment": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -15,6 +18,21 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.6.4",
         "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+      },
+      "mini-models": {
+        "git": "https://github.com/EmmN/meteor-mini-models.git",
+        "tag": "v0.1.2",
+        "commit": "b3859df9a2c0cedaef714d442affdf679cca4e77"
+      },
+      "collection-helpers": {
+        "git": "https://github.com/dburles/meteor-collection-helpers.git",
+        "tag": "v0.2.4",
+        "commit": "e10ac53aa03e9656ee8ecaff7b9054dcb3a8a791"
+      },
+      "moment": {
+        "git": "https://github.com/acreeger/meteor-moment.git",
+        "tag": "v2.5.1",
+        "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
       }
     }
   }

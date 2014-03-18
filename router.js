@@ -11,9 +11,9 @@ Router.configure({
 
 Router.map( function() {
 	
-	this.route('dashboard', {
-		path: '/',
-	})
+//	this.route('dashboard', {
+//		path: '/',		
+//	})
 	
 	this.route('dailytrafficreport', {
 		path: '/report/daily',

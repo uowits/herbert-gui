@@ -1,3 +1,7 @@
+<template name="totalValues">
+    <li><strong>{{community}}</strong> {{traffic}}</li>
+</template>
+
 <template name="dashboard">
 	
 	<div class="row padding-10">
@@ -6,13 +10,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<i class="fa fa-info-circle fa-fw"></i>
-						This Years Traffic
+						Traffic This Year
 					</div>
 					<div class="panel-body">
 						<ul class="no-bullet">
-							<li><strong>On-Net:</strong> over 9,000</li>
-							<li><strong>Off-Net:</strong> 200MB</li>
-							<li><strong>UOW:</strong> over 120MB</li>
+                            {{#each yearlyTotal}}
+                                {{> totalValues}}
+                            {{/each}}
 						</ul>
 					</div>
 				</div>
@@ -22,13 +26,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<i class="fa fa-info-circle fa-fw"></i>
-						This Weeks Traffic
+						Traffic This Week
 					</div>
 					<div class="panel-body">
 						<ul class="no-bullet">
-							<li><strong>On-Net:</strong> over 9,000</li>
-							<li><strong>Off-Net:</strong> 200MB</li>
-							<li><strong>UOW:</strong> over 120MB</li>
+                            {{#each weeklyTotal}}
+                                {{> totalValues}}
+                            {{/each}}
 						</ul>
 					</div>
 				</div>
