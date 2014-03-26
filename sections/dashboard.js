@@ -9,17 +9,14 @@ Router.map(function() {
             this.subscribe('monthly_totals_for_year').wait();
             this.subscribe('this_weeks_usage').wait();
             this.subscribe('30day_usage').wait();
+            this.subscribe('today_usage_totals').wait();
+            this.subscribe('weekly_top_users').wait();
         },
 
         data: function() {
 
+            //Perform an aggregate for year to date by adding up all the months
             var monthly_totals = MonthlyTotals.find();
-            if (WeeklyTotals.find().count() > 0)
-                var weekly_usage = WeeklyTotals.findOne().communities;
-            else
-                var weekly_usage = []
-
-
             var monthly_comm_totals = {}
             monthly_totals.forEach(function(monthly_total) {
                 for(community in monthly_total.communities) {
@@ -31,11 +28,22 @@ Router.map(function() {
             });
 
             var months_daily_totals = DailyTotals.find();
+            var todays_daily_totals_obj = DailyTotals.findOne({}, {sort: {date: -1}});
+            var todays_daily_totals = (todays_daily_totals_obj) ? todays_daily_totals_obj.communities : []
+            var todays_weekly_totals_obj = WeeklyTotals.findOne({}, {sort: {date: -1}});
+            var todays_weekly_totals = todays_weekly_totals_obj ? todays_weekly_totals_obj.communities : []
+            var todays_monthly_totals_obj = MonthlyTotals.findOne({}, {sort: {date: -1}});
+            var todays_monthly_totals = todays_monthly_totals_obj ? todays_monthly_totals_obj.communities : []
+
+            var weekly_top_users = UserWeeklyTotals.find();
 
             var data ={
                 yearlyTotal: _.map(monthly_comm_totals, function(val,key){return {community: key, bytes: val}}),
-                weeklyTotal: _.map(weekly_usage, function(val,key){return {community: key, bytes: val}}),
+                weeklyTotal: _.map(todays_weekly_totals, function(val,key){return {community: key, bytes: val}}),
+                todaysTotals: _.map(todays_daily_totals, function(val,key){return {community: key, bytes: val}}),
+                monthsTotals: _.map(todays_monthly_totals, function(val,key){return {community: key, bytes: val}}),
                 months_daily_totals: months_daily_totals,
+                weekly_top_user: weekly_top_users,
             }
             return data;
         }	
@@ -55,8 +63,16 @@ if (Meteor.isServer) {
 
     Meteor.publish('30day_usage', function() {
         return DailyTotals.last30days();
+    });
+
+    Meteor.publish('weekly_top_users', function() {
+        week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
+        return UserWeeklyTotals.find( {'date': week_start}, {sort: {'communities.58698:102': -1}, limit: 20} )
     })
+
 }
+
+
 
 if (Meteor.isClient) {
     //Some helpers for formatting the values
@@ -76,7 +92,9 @@ if (Meteor.isClient) {
 //        return this.bytes;
         return readablizeBytes(this.bytes)
     }
-
+    Template.weeklyTopUser.OffNetUsage = function() {
+        return readablizeBytes(this.communities['58698:102']);
+    }
 
     //Attach the rendering of the 30 day chart
     Template.dashboard_30days.rendered = function() {
@@ -128,37 +146,35 @@ if (Meteor.isClient) {
                 }
             });
         }
-        else {
-            //The chart is already displayed. Time to update it with some data
+        //The chart is already displayed. Time to update it with some data
+        on_net = [];
+        off_net = [];
+        categories = []
 
-            on_net = [];
-            off_net = [];
-            categories = []
-
-            this.data.months_daily_totals.forEach(function(total) {
-                categories.push(moment(total.date).format("MMM Do YYYY"));
-                var day_of_week = moment(total.date).format('dddd');
-                on_net.push( {
-                    'y':  total.communities['58698:101'],
-                    day: day_of_week,
-                    
-                });
-                off_net.push( {
-                    'y':  total.communities['58698:102'],
-                    day: day_of_week,
-                })
-
+        this.data.months_daily_totals.forEach(function(total) {
+            categories.push(moment(total.date).format("MMM Do YYYY"));
+            var day_of_week = moment(total.date).format('dddd');
+            on_net.push( {
+                'y':  total.communities['58698:101'],
+                day: day_of_week,
+                
+            });
+            off_net.push( {
+                'y':  total.communities['58698:102'],
+                day: day_of_week,
             })
 
-            var chart = $('#dailytraffic').highcharts();
+        })
 
-            chart.xAxis[0].setCategories(categories);
-            chart.series[0].update({
-                data: on_net,
-            });
-            chart.series[1].update({
-                data: off_net
-            });
-        }
-    }
+        var chart = $('#dailytraffic').highcharts();
+
+        chart.xAxis[0].setCategories(categories);
+        chart.series[0].update({
+            data: on_net,
+        });
+        chart.series[1].update({
+            data: off_net
+        });
+
+   }
 }

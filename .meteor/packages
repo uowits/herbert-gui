@@ -11,3 +11,4 @@ iron-router
 mini-models
 collection-helpers
 moment
+paginator

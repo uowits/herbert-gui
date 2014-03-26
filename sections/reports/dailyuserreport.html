@@ -1,32 +1,32 @@
-<template name="dailytrafficreport">
+<template name="dailyUserTrafficReport">
 <div class="row padding-10">
     <div class="page-header">
-        <h2>Traffic Breakdown <small>For given time period</small></h2>
+        <h2>User Traffic Breakdown <small>For {{date}}</small></h2>
     </div>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Date</th>
+                <th>Username</th>
                 <th>Local</th>
                 <th>On-Net</th>
                 <th>Off-Net</th>
-                <th>Unknown</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody>
             {{#each totals}}
             <tr>
-                <td><a href='/report/user/daily/{{dateurl}}'}}>{{smalldate}}</a></td>
+                <td><a href="/user/{{username}}">{{username}}</td>
                 <td>{{local}}</td>
                 <td>{{onnet}}</td>
                 <td>{{offnet}}</td>
-                <td>{{unknown}}</td>
                 <td>{{total}}</td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+    <p>ToDo:  Scrolling load<p>
 </div>
 </template>
+

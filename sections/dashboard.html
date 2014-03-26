@@ -8,80 +8,120 @@
     {{/constant}}
 </template>
 
+
+<template name="weeklyTopUser">
+    <li><a href="/user/{{username}}">{{username}}</a> - [{{OffNetUsage}}]</li>
+</template>
+
+
 <template name="dashboard">
-	
-	<div class="row padding-10">
-		<div class="col-md-8">
-			<div class = "col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-info-circle fa-fw"></i>
-						Traffic This Year
-					</div>
-					<div class="panel-body">
-						<ul class="no-bullet">
-                            {{#each yearlyTotal}}
-                                {{> totalValues}}
-                            {{/each}}
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- </col-md-4> -->
-			<div class = "col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<i class="fa fa-info-circle fa-fw"></i>
-						Traffic This Week
-					</div>
-					<div class="panel-body">
-						<ul class="no-bullet">
-                            {{#each weeklyTotal}}
-                                {{> totalValues}}
-                            {{/each}}
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- </col-md-4> -->
-			<div class="col-md-12">
-				<div class="panel panel-info">
-					<div class="panel-heading">
-						<i class="fa fa-bar-chart-o fa-fw"></i>
-						Daily Traffic History (30 days)
-					</div>
-					<div class="panel-body">
-                        {{> dashboard_30days}}
-					</div>
-				</div>
-			</div>			
-		</div>
-		<div class="col-md-4">
-			<!--	RIGHT HAND COLUMN		 -->
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<i class="fa fa-female fa-fw"></i>
-					Weekly Top Users (Off-Net)
-				</div>
-				<div class="panel-body">
-					<ul>
-						<li>User1 [12G]</li>
-						<li>User2 [10G]</li>
-						<li>User3 [5G]</li>
-						<li>User3 [5G]</li>
-						<li>abc [5G]</li>
-						<li>123 [5G]</li>
-						<li>easy as [5G]</li>
-						<li>do [5G]</li>
-						<li>ray [5G]</li>
-						<li>me [5G]</li>
-						<li>list of [5G]</li>
-						<li>users [2MB]</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+<div class="row padding-10">
+    <div class="page-header">
+        <h4>Traffic Dashboard</h4>
+    </div>
+    
+    <div class="col-md-12">
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic Today  
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each todaysTotals}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
 
 
-	</div> <!-- End of row -->	
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Week
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each weeklyTotal}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Month
+                </div>
+                <div class="panel-body">
+                        {{#each monthsTotals}}
+                        {{> totalValues}}
+                        {{/each}}
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Year
+                </div>
+                <div class="panel-body">
+                    {{#each yearlyTotal}}
+                    {{> totalValues}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+
+    </div> <!-- TOP ROW -->
+
+    <div class="col-md-8">
+       <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>
+                    Daily Traffic History (30 days)
+                </div>
+                <div class="panel-body">
+                    {{> dashboard_30days}}
+                </div>
+            </div>
+        </div>			
+    </div>
+    <div class="col-md-4">
+        <!--	RIGHT HAND COLUMN		 -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-female fa-fw"></i>
+                This Weeks Top 20 Users (Off-Net)
+            </div>
+            <div class="panel-body">
+                <ul>
+                    {{#each weekly_top_user}}
+                    {{> weeklyTopUser}}
+                    {{/each}}
+               </ul>
+            </div>
+        </div><!-- / Right Hand Column -->
+    </div>
+
+
+</div> <!-- End of row -->	
 </template>

@@ -1,0 +1,81 @@
+Router.map( function() {
+
+    var daily_usage_totals_subscription;
+	
+	this.route('dailytrafficreport', {
+		path: '/report/daily/:_page',
+		
+		before: function() {
+            daily_usage_totals_subscription = this.subscribe('daily_usage_totals', 
+                                                               Session.get("pagingSkip") || 0,
+                                                               Session.get("pagingLimit")) || 3;
+            daily_usage_totals_subscription.wait();
+		},
+		
+		data: function() {
+            var _pager = new Meteor.Paginator({
+                templates: {
+                    content: 'dailytrafficreport',
+                },
+                pagination: {
+                    resultsPerPage: 3,
+                },
+                callbacks: {
+                    onPagingCompleted: function(skip, limit) {
+                        Session.set("pagingSkip", skip);
+                        Session.set("pagingLimit", limit);
+                    },
+                    getDependentSubscriptionsHandles: function() {
+                        return daily_usage_totals_subscription;
+                    },
+                    getTotalRecords: function(cb) {
+                        //You need to reutnr the total record count here using the provided callback
+
+                        Meteor.call('daily_usage_totals_count', function(err, result) {
+                            cb(result);
+                        });
+                    },
+                    onTemplateRendered: function() {}, //regular render code
+                    onTemplateCreated: function() {
+                        Session.set("pageSkip", 0);
+                        Session.set("pagingLimit", 3);
+                    }
+                }
+            });
+
+			return {
+				'totals': DailyTotals.find(),
+			}
+		}
+	})
+});	
+
+
+
+
+if (Meteor.isClient) {
+	
+	Template.dailytrafficreport.date2 = function() {
+		return this.date;
+	}
+
+}
+
+
+if (Meteor.isServer) {
+
+    Meteor.publish("daily_usage_totals", function(skip, limit) {
+        return DailyTotals.find({}, {
+            skip: skip || 0,
+            limit: limit || 3
+        })
+    });
+
+    Meteor.methods({
+        daily_usage_totals_count: function() {
+            return DailyTotals.find().count();
+        }
+    });
+
+
+}
