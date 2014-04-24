@@ -10,7 +10,7 @@ Router.map( function() {
 		data: function() {
 			return {
 				'totals': UserDailyTotals.find(),
-                'date': moment(this.params.date).format("MMMM Do YYYY")
+                'date': moment(this.params.date).format("dddd, MMMM Do, YYYY")
 			}
 		}
 	})
