@@ -2,13 +2,15 @@
 
 exec >> deploy.log
 
-export PATH="$PATH:/usr/local/bin"
+export PATH=".meteor:$PATH:/usr/local/bin"
 export HOME="$PWD"
 umask 022
 
-curl https://install.meteor.com | /bin/sh
+if ! hash meteor 2>/dev/null
+then
+	curl https://install.meteor.com | /bin/sh
+fi
 
-npm install
 npm install meteorite
 
 ./node_modules/.bin/mrt bundle bundle.tgz
