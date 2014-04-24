@@ -1,14 +1,17 @@
 Router.map( function() {
 
 	this.route('dailytrafficreport', {
-		path: '/report/daily/',
-		
+		path: '/report/daily/:month',
+	
 		before: function() {
-            this.subscribe('daily_usage_totals').wait();
+            var start_date = moment(this.params.month + "-01T00Z").toDate();
+            this.subscribe('daily_usage_totals', start_date).wait();
         },
 		data: function() {
+            var str_date = moment(this.params.month + "-01T00Z").format('MMMM, YYYY');
 			return {
-				'totals': DailyTotals.find({}, {sort: {date: -1}}),
+                'period': str_date,
+				'totals': DailyTotals.find({}, {sort: {date: 1}}),
 			}
 		}
 	})
@@ -58,7 +61,8 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
-    Meteor.publish("daily_usage_totals", function() {
-        return DailyTotals.find({}, {sort: {date: -1}});
+    Meteor.publish("daily_usage_totals", function(start_date) {
+        end_date = moment(start_date).add('month', 1).toDate();
+        return DailyTotals.find({ date: {$lt: end_date, $gte: start_date} }, {sort: {date: 1}});
     });
 }

@@ -1,33 +1,32 @@
-<template name="yearlytrafficreport">
+<template name="yearlyUserTrafficReport">
 <div class="row padding-10">
     <div class="page-header">
-        <h2>Traffic Breakdown <small>on years</small></h2>
+        <h2>User Traffic Breakdown <small>For Year {{year}}</small></h2>
     </div>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Year</th>
+                <th>Username</th>
                 <th>Local</th>
                 <th>On-Net</th>
                 <th>Off-Net</th>
                 <th>Total</th>
-                <th>User Report</th>
             </tr>
         </thead>
         <tbody>
             {{#each totals}}
             <tr>
-                <td><a href='/report/monthly/{{year}}'}}>{{year}}</a></td>
+                <td><a href="/user/{{username}}">{{username}}</td>
                 <td>{{local}}</td>
                 <td>{{onnet}}</td>
                 <td>{{offnet}}</td>
                 <td>{{total}}</td>
-                <td><a href='/report/user/yearly/{{year}}'><i class="fa fa-users"></i></a></td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+    <p>ToDo:  Scrolling load<p>
 </div>
 </template>
 

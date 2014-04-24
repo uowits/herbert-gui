@@ -1,13 +1,13 @@
-<template name="yearlytrafficreport">
+<template name="monthlytrafficreport">
 <div class="row padding-10">
     <div class="page-header">
-        <h2>Traffic Breakdown <small>on years</small></h2>
+        <h2>Monthly Traffic Breakdown <small>for {{year}}</small></h2>
     </div>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Year</th>
+                <th>Date</th>
                 <th>Local</th>
                 <th>On-Net</th>
                 <th>Off-Net</th>
@@ -18,12 +18,12 @@
         <tbody>
             {{#each totals}}
             <tr>
-                <td><a href='/report/monthly/{{year}}'}}>{{year}}</a></td>
+                <td><a href='/report/daily/{{dateurl}}'}}>{{shortdate}}</a></td>
                 <td>{{local}}</td>
                 <td>{{onnet}}</td>
                 <td>{{offnet}}</td>
                 <td>{{total}}</td>
-                <td><a href='/report/user/yearly/{{year}}'><i class="fa fa-users"></i></a></td>
+                <td><a href='/report/user/monthly/{{dateurl}}'><i class="fa fa-users"></i></a></td>
             </tr>
             {{/each}}
         </tbody>
