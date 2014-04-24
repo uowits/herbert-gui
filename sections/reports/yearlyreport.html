@@ -1,0 +1,31 @@
+<template name="yearlytrafficreport">
+<div class="row padding-10">
+    <div class="page-header">
+        <h2>Traffic Breakdown <small>on year</small></h2>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Local</th>
+                <th>On-Net</th>
+                <th>Off-Net</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each totals}}
+            <tr>
+                <td><a href='/report/user/monthly/{{dateurl}}'}}>{{year}}</a></td>
+                <td>{{local}}</td>
+                <td>{{onnet}}</td>
+                <td>{{offnet}}</td>
+                <td>{{total}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+</template>
+

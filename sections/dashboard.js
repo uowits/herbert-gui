@@ -27,7 +27,7 @@ Router.map(function() {
                 }
             });
 
-            var months_daily_totals = DailyTotals.find();
+            var months_daily_totals = DailyTotals.find({}, {sort: {date: 1}});
             var todays_daily_totals_obj = DailyTotals.findOne({}, {sort: {date: -1}});
             var todays_daily_totals = (todays_daily_totals_obj) ? todays_daily_totals_obj.communities : []
             var todays_weekly_totals_obj = WeeklyTotals.findOne({}, {sort: {date: -1}});

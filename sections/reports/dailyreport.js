@@ -8,7 +8,7 @@ Router.map( function() {
         },
 		data: function() {
 			return {
-				'totals': DailyTotals.find(),
+				'totals': DailyTotals.find({}, {sort: {date: -1}}),
 			}
 		}
 	})
