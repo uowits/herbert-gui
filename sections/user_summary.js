@@ -10,7 +10,7 @@ Router.map(function() {
             this.subscribe('user_monthly_totals_for_year', username).wait();
             this.subscribe('user_this_weeks_usage', username).wait();
             this.subscribe('user_30day_usage', username).wait();
-
+            this.subscribe('user_all_daily_traffic', username).wait();
         },
 
         data: function() {
@@ -44,6 +44,7 @@ Router.map(function() {
                 weeklyTotal: _.map(todays_weekly_totals, function(val,key){return {community: key, bytes: val}}),
                 todaysTotals: _.map(todays_daily_totals, function(val,key){return {community: key, bytes: val}}),
                 monthsTotals: _.map(todays_monthly_totals, function(val,key){return {community: key, bytes: val}}),
+                userTraffic: UserDailyTotals.find({}, {sort: {date: 1}}),
                 //                months_daily_totals: months_daily_totals,
                 //                weekly_top_user: weekly_top_users,
             }
@@ -66,6 +67,10 @@ if (Meteor.isServer) {
     Meteor.publish('user_30day_usage', function(username) {
         return UserDailyTotals.last30days(username);
     });
+
+    Meteor.publish('user_all_daily_traffic', function(username) {
+        return UserDailyTotals.find({username: username});
+    })
 //
 //    Meteor.publish('user_weekly_top_users', function() {
 //        week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
@@ -76,6 +81,10 @@ if (Meteor.isServer) {
 
 if (Meteor.isClient) {
     Template.user_traffic_graph.rendered = function() {
+
+        data = []
+
+
         if(! $('#user_traffic_graph').highcharts()) {
 
             //The chart does not yet exist.  We need to create it
@@ -83,23 +92,72 @@ if (Meteor.isClient) {
                 rangeSelector : {
                     selected: 1
                 },
+                tooltip: {
+                    valueDecimals: 2,
+                    formatter: function() {
+                        date_str = moment(this.points[0].x).format('dddd MMMM Do YYYY');
+                        to_return = "<strong><h4>" + date_str + "</h4></strong><br />";
+                        this.points.forEach(function(entry) {
+                            to_return += entry.series.name + ": " + readablizeBytes(entry.y) + "<br />";
+                        });
+                        return to_return;
 
+                        to_return += this.point.day + "<br />"
+                        to_return += this.x + "<br />"
+                        to_return += readablizeBytes(this.y) + "<br />";
+                        return to_return;
+                    }
+                },
                 title: {
                     text: 'Users usage',
                 },
 
-                series: {
-                    name: 'Usage',
+                series: [{
+                    name: 'On-Net',
+                    type: 'column',
+
                     data: [
-                        [12345000, 56],
-                        [12346000, 100]
                     ],
                     tooltip: {
                         valueDecimals: 2
                     },
+                }, {
+                    name: 'Off-Net',
+                    type: 'column',
+
+                    data: [
+                    ],
+                }],
+                legend: {
+                    enabled: true
                 },
+
             });
         }
+
+        //The chart is already displayed. Time to update it with some data
+        on_net = [];
+        off_net = [];
+
+        this.data.userTraffic.forEach(function(total) {
+            time = total.date.getTime(); 
+            on_net.push(
+               [time, total.communities['58698:101']]
+            );
+            off_net.push(
+               [time, total.communities['58698:102']]
+            );
+        });
+
+        var chart = $('#user_traffic_graph').highcharts();
+
+        chart.series[0].update({
+            data: on_net,
+        });
+        chart.series[1].update({
+            data: off_net
+        });
+
     }
 }
 
