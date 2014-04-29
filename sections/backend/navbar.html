@@ -1,17 +1,18 @@
 <template name="navbar">
-		{{#constant}}
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                     <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
+                        <form name="user_form" id="user_form">
+                            <div class="input-group custom-search-form">
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Username...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="submit" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
                         <!-- /input-group -->
                     </li>
                     <li>
@@ -37,5 +38,4 @@
             <!-- /.sidebar-collapse -->
         </nav>
         <!-- /.navbar-static-side -->
-        {{/constant}}
 </template>

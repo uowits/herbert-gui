@@ -5,7 +5,7 @@ Router.map(function() {
     this.route('user_summary', {
         path: '/user/:username',
 
-        before: function() {
+        onBeforeAction: function() {
             var username = this.params.username;
             this.subscribe('user_monthly_totals_for_year', username).wait();
             this.subscribe('user_this_weeks_usage', username).wait();

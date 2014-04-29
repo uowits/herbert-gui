@@ -1,0 +1,7 @@
+{
+    "communities": [
+        {"description": "Local", "community": "58698:100"},
+        {"description": "On-Net", "community": "58698:101"},
+        {"description": "Off-Net", "community": "58698:102"}
+    ]
+}

@@ -1,9 +1,34 @@
+//CSV Export
+Router.map( function() {
+    this.route('yearlyUserTrafficReportExport', {
+        where: 'server',
+        path: '/download/report/user/yearly/:year',
+        
+        action: function() {
+            var selectDate = moment(this.params.year + "-01-01T00Z").toDate();
+            this.response.writeHead(200, 
+                                    {
+                                        'Content-Type': 'text/csv',
+                                        'Content-Disposition': "attachment; filename=test.csv",
+                                    });
+            this.response.write("Username," + getTrafficTitles() + ",Total\n");
+            var self =this;
+            UserYearlyTotals.find({date: selectDate}, {sort: {'communities.58698:102': -1}}).forEach(function (row) {
+                var to_add = row['username'] +"," + communityValues(row.communities, true).join() + "\n";
+                self.response.write(to_add)
+            });
+            this.response.end();
+        }
+    })
+})
+
+
 Router.map( function() {
 
 	this.route('yearlyUserTrafficReport', {
 		path: '/report/user/yearly/:year',
 		
-		before: function() {
+		onBeforeAction: function() {
             var selectDate = moment(this.params.year + "-01-01T00Z").toDate();
             this.subscribe('yearly_user_report', selectDate).wait();
         },
@@ -49,9 +74,12 @@ if (Meteor.isClient) {
     }
 }
 
-
 if (Meteor.isServer) {
     Meteor.publish("yearly_user_report", function(date) {
         return UserYearlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
     });
 }
+
+
+
+

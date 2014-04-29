@@ -3,7 +3,7 @@ Router.map( function() {
 	this.route('yearlytrafficreport', {
 		path: '/report/',
 		
-		before: function() {
+		onBeforeAction: function() {
             this.subscribe('yearly_usage_totals').wait();
         },
 		data: function() {

@@ -3,7 +3,7 @@ Router.map( function() {
 	this.route('monthlyUserTrafficReport', {
 		path: '/report/user/monthly/:date',
 		
-		before: function() {
+		onBeforeAction: function() {
             var start_date = moment(this.params.date + "-01T00Z").toDate();
             this.subscribe('monthly_user_report', start_date).wait();
         },

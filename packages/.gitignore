@@ -1,9 +1,7 @@
-/iron-router
 /bootstrap-3
+/iron-router
 /mini-models
 /collection-helpers
 /moment
-/pagination-mini
-/pages
-/pagination
 /paginator
+/blaze-layout
