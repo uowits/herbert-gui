@@ -14,7 +14,7 @@ fi
 
 npm install meteorite
 
-cd src && mrt bundle bundle.tgz
+( cd src && mrt bundle bundle.tgz )
 
 tar -zxvf src/bundle.tgz
 mv dist dist-old
