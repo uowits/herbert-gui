@@ -56,6 +56,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     Meteor.publish("yearly_usage_totals", function() {
+        if( accessCheck(this) ) return;
         return YearlyTotals.find({}, {sort: {date: -1}});
     });
 }

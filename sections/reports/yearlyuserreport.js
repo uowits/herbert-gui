@@ -5,6 +5,7 @@ Router.map( function() {
         path: '/download/report/user/yearly/:year',
         
         action: function() {
+            //if(accessCheck(this)) return;
             var selectDate = moment(this.params.year + "-01-01T00Z").toDate();
             this.response.writeHead(200, 
                                     {
@@ -76,6 +77,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     Meteor.publish("yearly_user_report", function(date) {
+        if( accessCheck(this) ) return;
         return UserYearlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
     });
 }

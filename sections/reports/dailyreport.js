@@ -62,6 +62,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     Meteor.publish("daily_usage_totals", function(start_date) {
+        if( accessCheck(this) ) return;
         end_date = moment(start_date).add('month', 1).toDate();
         return DailyTotals.find({ date: {$lt: end_date, $gte: start_date} }, {sort: {date: 1}});
     });

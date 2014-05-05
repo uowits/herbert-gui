@@ -60,18 +60,22 @@ Router.map(function() {
 if (Meteor.isServer) {
 
     Meteor.publish("monthly_totals_for_year", function() {
+        if( accessCheck(this) ) return;
         return MonthlyTotals.yearlyTotals(2014);
     });
 
     Meteor.publish("this_weeks_usage", function() {
+        if( accessCheck(this) ) return;
         return WeeklyTotals.find({}, { sort: {date: -1}, limit: 1 })
     });
 
     Meteor.publish('30day_usage', function() {
+        if( accessCheck(this) ) return;
         return DailyTotals.last30days();
     });
 
     Meteor.publish('weekly_top_users', function() {
+        if( accessCheck(this) ) return;
         week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
         return UserWeeklyTotals.find( {'date': week_start}, {sort: {'communities.58698:102': -1}, limit: 20} )
     })

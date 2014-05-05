@@ -57,6 +57,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     Meteor.publish("monthly_usage_totals", function(year) {
+        if( accessCheck(this) ) return;
         var date_start = moment(year + "-01-01T00Z").toDate();
         var date_finish = moment(date_start).add('years', 1).toDate();
         return MonthlyTotals.find({ date: {$lt: date_finish, $gte: date_start}}, {sort: {date: 1}});

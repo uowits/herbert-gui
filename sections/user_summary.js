@@ -57,18 +57,22 @@ Router.map(function() {
 if (Meteor.isServer) {
 
     Meteor.publish("user_monthly_totals_for_year", function(username) {
+        if( accessCheck(this) ) return;
         return UserMonthlyTotals.yearlyTotals(username, 2014);
     });
 
     Meteor.publish("user_this_weeks_usage", function(username) {
+        if( accessCheck(this) ) return;
         return UserWeeklyTotals.find({username: username}, { sort: {date: -1}, limit: 1 })
     });
 
     Meteor.publish('user_30day_usage', function(username) {
+        if( accessCheck(this) ) return;
         return UserDailyTotals.last30days(username);
     });
 
     Meteor.publish('user_all_daily_traffic', function(username) {
+        if( accessCheck(this) ) return;
         return UserDailyTotals.find({username: username});
     })
 //
@@ -135,29 +139,29 @@ if (Meteor.isClient) {
             });
         }
 
-        //The chart is already displayed. Time to update it with some data
-        on_net = [];
-        off_net = [];
+        Deps.autorun(function() {
+            //The chart is already displayed. Time to update it with some data
+            on_net = [];
+            off_net = [];
+                UserDailyTotals.find({}, {sort: {date: 1}}).forEach(function(total) {
+                time = total.date.getTime(); 
+                on_net.push(
+                    [time, total.communities['58698:101']]
+                );
+                off_net.push(
+                    [time, total.communities['58698:102']]
+                );
+            });
 
-        this.data.userTraffic.forEach(function(total) {
-            time = total.date.getTime(); 
-            on_net.push(
-               [time, total.communities['58698:101']]
-            );
-            off_net.push(
-               [time, total.communities['58698:102']]
-            );
+            var chart = $('#user_traffic_graph').highcharts();
+
+            chart.series[0].update({
+                data: on_net,
+            });
+            chart.series[1].update({
+                data: off_net
+            });
         });
-
-        var chart = $('#user_traffic_graph').highcharts();
-
-        chart.series[0].update({
-            data: on_net,
-        });
-        chart.series[1].update({
-            data: off_net
-        });
-
     }
 }
 

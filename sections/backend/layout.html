@@ -27,7 +27,9 @@
 	            <!-- /.navbar-header -->
 	
 	            <ul class="nav navbar-top-links navbar-right">
+                    {{#if userGood}}
 		            {{> alertsmenu}}
+                    {{/if}}
 					{{> usermenu}}
 	            </ul>
 	            <!-- /.navbar-top-links -->
@@ -35,7 +37,9 @@
 	        </nav>
 	        <!-- /.navbar-static-top -->
 			
-			{{> navbar}}
+            {{#if userGood}}
+            {{> navbar}}
+            {{/if}}
 	
 	        <div id="page-wrapper">
 	            <div class="row">

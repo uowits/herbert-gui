@@ -307,3 +307,24 @@ table.dataTable thead .sorting:after {
 .show-grid {
     margin: 15px 0;
 }
+
+/** FONT AWESOME ENHANCMENTS **/
+.fa-2 {
+    font-size: 2em
+}
+
+.fa-3 {
+    font-size: 4em
+}
+
+.fa-4 {
+    font-size: 7em
+}
+
+.fa-5 {
+    font-size: 12em
+}
+
+.fa-6 {
+    font-size: 20em
+}

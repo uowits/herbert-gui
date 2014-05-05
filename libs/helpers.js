@@ -29,4 +29,13 @@ communityValues = function(entry, return_totals) {
     return to_return;
 }
 
+accessCheck = function(router) {
+    var user = Meteor.users.findOne({_id:router.userId});
+    if(!user || !(Meteor.settings.public.access.indexOf(user.profile.name) >= 0)) {
+        router.stop();
+        return true;
+    }
+    return false;
+}
+
 

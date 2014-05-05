@@ -53,6 +53,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
     Meteor.publish("monthly_user_report", function(date) {
+        if( accessCheck(this) ) return;
         return UserMonthlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
     });
 }

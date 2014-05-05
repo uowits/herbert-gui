@@ -1,5 +1,25 @@
-//Daily totals table.  Keeps summary of data that was generated through that day
+Router.onBeforeAction( function (pause) {
 
+  if (_.include(['login'], this.route.name) || this.where == 'server'){
+    return;
+  }
+  console.log(this.route)
+
+  if (!Meteor.userId() || (Meteor.user() && !(Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0))) {
+    this.render('login');
+    pause();
+  }
+});
+
+UI.registerHelper('userGood', function() {
+    if(!Meteor.userId()) {
+        return false;
+    }
+    if(Meteor.user() && Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0) {
+        return true;
+    }
+    return false;
+})
 
 
 Router.configure({

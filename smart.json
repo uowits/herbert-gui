@@ -5,6 +5,9 @@
     "mini-models": {},
     "collection-helpers": {},
     "moment": {},
-    "paginator": {}
+    "paginator": {},
+    "pages": {},
+    "accounts-uow": {},
+    "accounts-ui-bootstrap-3": {}
   }
 }

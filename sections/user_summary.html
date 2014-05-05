@@ -2,6 +2,23 @@
     <div id="user_traffic_graph" style="width:100%; height:400px;"></div>
 </template>
 
+<template name="user_throttling_controls">
+
+    <div id="user_throttling_controls">
+        <form>
+            <div class="input-group">
+                <span class="input-group-addon">Throttling Control</span>
+                <select name="throttle_method">
+                    <option value="firewall">Deny all traffic (Firewall)</option>
+                    <option value="throttleOff">Throttle offnet to 128kbps</option>
+                    <option value="throttleAll">Throttle all to 128kbps</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+</template>
+
 <template name="user_summary">
 <div class="row padding-10">
     <div class="page-header">

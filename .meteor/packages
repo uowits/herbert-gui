@@ -11,3 +11,5 @@ mini-models
 collection-helpers
 moment
 paginator
+accounts-uow
+accounts-ui-bootstrap-3
