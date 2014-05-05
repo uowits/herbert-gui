@@ -2,9 +2,9 @@
 
 exec >> deploy.log
 
-export HOME="$PWD/home"
-mkdir -p "$HOME"
-export PATH="$HOME/.meteor:$PATH:/usr/local/bin"
+cd .. # go up
+export HOME="$PWD"
+export PATH="$HOME/.meteor:$HOME/node_modules/.bin:$PATH:/usr/local/bin"
 umask 022
 
 if ! hash meteor 2>/dev/null
@@ -14,8 +14,10 @@ fi
 
 npm install meteorite
 
-./node_modules/.bin/mrt bundle bundle.tgz
-tar -zxvf bundle.tgz
+cd src && mrt bundle bundle.tgz
+
+tar -zxvf src/bundle.tgz
 mv dist dist-old
 mv bundle dist
 rm -r dist-old
+
