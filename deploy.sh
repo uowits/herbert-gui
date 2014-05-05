@@ -2,8 +2,9 @@
 
 exec >> deploy.log
 
-export PATH=".meteor:$PATH:/usr/local/bin"
-export HOME="$PWD"
+export HOME="$PWD/home"
+mkdir -p "$HOME"
+export PATH="$HOME/.meteor:$PATH:/usr/local/bin"
 umask 022
 
 if ! hash meteor 2>/dev/null
