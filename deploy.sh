@@ -19,5 +19,5 @@ npm install meteorite
 tar -zxvf src/bundle.tgz
 test -d dist && mv dist dist-old 
 mv bundle dist
-rm -r dist-old
+test -d dist-old && rm -r dist-old
 
