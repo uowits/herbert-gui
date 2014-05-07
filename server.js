@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	if(!("settings" in Meteor)) {
+	if(!("public" in Meteor)) {
 		console.log("Meteor settings file has not been loaded")
 	}
 });
