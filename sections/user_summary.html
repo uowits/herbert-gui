@@ -5,15 +5,23 @@
 <template name="user_throttling_controls">
 
     <div id="user_throttling_controls">
+            
+        <div class="page-header">
+            <strong>Currently: <i>{{throttleMethod}}Default</i></strong>
+        </div>
+
         <form>
             <div class="input-group">
-                <span class="input-group-addon">Throttling Control</span>
-                <select name="throttle_method">
-                    <option value="firewall">Deny all traffic (Firewall)</option>
-                    <option value="throttleOff">Throttle offnet to 128kbps</option>
-                    <option value="throttleAll">Throttle all to 128kbps</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="throttle_method">Update Throttling Control</label>
+                    <select name="throttle_method">
+                        {{#each throttleMethods}}
+                            <option value="{{item}}">{{description}}</option>
+                        {{/each}}
+                    </select>
+                 </div>
+                
+           </div>
         </form>
     </div>
 
@@ -119,7 +127,7 @@
                     User Throttling Controls
                 </div>
                 <div class="panel-body">
-                    <p>ToDo:  Build user throttling controls</p>
+                    {{> user_throttling_controls}}
                 </div>
             </div>
     </div>

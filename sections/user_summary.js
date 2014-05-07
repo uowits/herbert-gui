@@ -45,14 +45,13 @@ Router.map(function() {
                 todaysTotals: _.map(todays_daily_totals, function(val,key){return {community: key, bytes: val}}),
                 monthsTotals: _.map(todays_monthly_totals, function(val,key){return {community: key, bytes: val}}),
                 userTraffic: UserDailyTotals.find({}, {sort: {date: 1}}),
-                //                months_daily_totals: months_daily_totals,
+                                //                months_daily_totals: months_daily_totals,
                 //                weekly_top_user: weekly_top_users,
             }
             return data;
         }	
     })
 })
-
 
 if (Meteor.isServer) {
 
@@ -84,6 +83,10 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
+    Template.user_throttling_controls.throttleMethods = function() {
+        return _.map(Meteor.settings.public.throttle_methods, function(val, key) { return {item: key, description: val} })
+    }
+
     Template.user_traffic_graph.rendered = function() {
 
         data = []

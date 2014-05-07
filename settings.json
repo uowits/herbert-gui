@@ -5,6 +5,13 @@
         {"description": "Off-Net", "community": "58698:102"}
     ],
     "public": {
-        "access": ["scotto", "dfs"]
-    }
+        "access": ["scotto", "dfs", "sdunster"],
+        "throttle_methods": {
+            "": "Default Throttling",
+            "firewall": "Deny/Block all traffic",
+            "throttleOff": "Throttle Off-Net to 128kbps",
+            "throttleAll": "Throttle User to 128kbps"
+        }
+    } 
 }
+

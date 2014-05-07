@@ -17,3 +17,7 @@ if (Meteor.isServer) {
     // code to run on server at startup
   });
 }
+
+if (!("settings" in Meteor)) {
+    console.log("Could not find Settings.  You should probably look into this.");
+}
