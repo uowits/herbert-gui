@@ -2,7 +2,7 @@ Router.map( function() {
 	this.route('report_user_day', {
 		path: '/report/user/:year/:month/:day',
 		waitOn: function() {
-            return Meteor.subscribe('daily_user_report', this.params.year, this.params.month, this.params.date);
+            return Meteor.subscribe('daily_user_report', this.params.year, this.params.month, this.params.day);
         },
 		data: function() {
 			return {
