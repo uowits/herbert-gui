@@ -36,7 +36,9 @@ Meteor.publish("monthly_usage_totals", function(year) {
 	console.log("monthly_usage_totals: "+year);
     var date_start = moment(year + "-01-01T00Z");
     var date_end = date_start.add('years', 1)
-    return MonthlyTotals.find({ date: {$lt: date_end.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
+    var test = MonthlyTotals.find({ date: {$lt: date_end.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
+    console.log("count: "+test.count())
+	return test;
 });
 
 Meteor.publish("daily_usage_totals", function(year, month) {
