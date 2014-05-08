@@ -1,0 +1,129 @@
+<template name="totalValues">
+    <li><strong>{{community}}</strong> {{bytes traffic}}</li>
+</template>
+
+<template name="dashboard_30days">
+    <div id="dailytraffic" style="width:100%; height:400px;"></div>
+</template>
+
+
+<template name="weeklyTopUser">
+    <li><a href="/user/{{username}}">{{username}}</a> - [{{bytes OffNetUsage}}]</li>
+</template>
+
+
+<template name="dashboard">
+<div class="row padding-10">
+    <div class="page-header">
+        <h3>Traffic Dashboard</h3>
+    </div>
+    
+    <div class="col-md-12">
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic Today  
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each todaysTotals}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Week
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each weeklyTotal}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Month
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each monthsTotals}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Segment for today traffic -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i>
+                    Traffic This Year
+                </div>
+                <div class="panel-body">
+                    <ul class="no-bullet">
+                        {{#each yearlyTotal}}
+                        {{> totalValues}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div> <!-- TOP ROW -->
+
+    <div class="col-md-8">
+       <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i>
+                    Daily Traffic History (30 days)
+                </div>
+                <div class="panel-body">
+                    {{> dashboard_30days}}
+                </div>
+            </div>
+        </div>			
+    </div>
+    <div class="col-md-4">
+        <!--	RIGHT HAND COLUMN		 -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-female fa-fw"></i>
+                This Weeks Top 20 Users (Off-Net)
+            </div>
+            <div class="panel-body">
+                <ul>
+                    {{#each weekly_top_user}}
+                    {{> weeklyTopUser}}
+                    {{/each}}
+               </ul>
+            </div>
+        </div><!-- / Right Hand Column -->
+    </div>
+
+
+</div> <!-- End of row -->	
+</template>

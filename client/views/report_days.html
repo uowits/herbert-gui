@@ -1,0 +1,32 @@
+<template name="report_days">
+	<div class="row padding-10">
+	    <div class="page-header">
+	        <h2>Traffic Breakdown <small>For {{year}}-{{month}}</small></h2>
+	    </div>
+	
+	    <table class="table table-striped">
+	        <thead>
+	            <tr>
+	                <th>Date</th>
+	                <th>Local</th>
+	                <th>On-Net</th>
+	                <th>Off-Net</th>
+	                <th>Unknown</th>
+	                <th>Total</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            {{#each totals}}
+	            <tr>
+	                <td><a href="{{pathFor 'report_user_days'}}">{{smalldate}}</a></td>
+	                <td>{{bytes local}}</td>
+	                <td>{{bytes onnet}}</td>
+	                <td>{{bytes offnet}}</td>
+	                <td>{{bytes unknown}}</td>
+	                <td>{{bytes total}}</td>
+	            </tr>
+	            {{/each}}
+	        </tbody>
+	    </table>
+	</div>
+</template>

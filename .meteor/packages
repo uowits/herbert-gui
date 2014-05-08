@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-insecure
 bootstrap-3
 iron-router
 mini-models
@@ -12,4 +11,4 @@ collection-helpers
 moment
 paginator
 accounts-uow
-accounts-ui-bootstrap-3
+accounts-ui-bootstrap-3-blaze

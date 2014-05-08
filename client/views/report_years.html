@@ -1,0 +1,32 @@
+<template name="report_years">
+<div class="row padding-10">
+    <div class="page-header">
+        <h2>Traffic Breakdown <small>on years</small></h2>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Local</th>
+                <th>On-Net</th>
+                <th>Off-Net</th>
+                <th>Total</th>
+                <th>User Report</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each totals}}
+            <tr>
+                <td><a href="{{pathFor 'report_months'}}">{{year}}</a></td>
+                <td>{{bytes local}}</td>
+                <td>{{bytes onnet}}</td>
+                <td>{{bytes offnet}}</td>
+                <td>{{bytes total}}</td>
+                <td><a href="{{pathFor 'report_user_years'}}"><i class="fa fa-users"></i></a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+</template>
