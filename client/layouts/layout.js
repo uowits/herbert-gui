@@ -1,17 +1,15 @@
 
 Template.layout_navbar.events({
-	'submit #user_form': function(e) {
-        e.preventDefault();
-        Router.go('/user/' + $(this.find("#username")).val());
+	'submit #user_form': function(event, template) {
+        event.preventDefault();
+        Router.go('user', {username: $(template.find("#username")).val()});
 	}
 })
 
 Template.layout.rendered = function() {
 
 	$(function() {
-	
 	    $('#side-menu').metisMenu();
-	
 	});
 	
 	//Loads the correct sidebar on window load,
@@ -25,7 +23,6 @@ Template.layout.rendered = function() {
 	            $('div.sidebar-collapse').removeClass('collapse')
 	        }
 	    })
-	})        
-
+	})
 	
 }
