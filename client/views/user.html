@@ -27,6 +27,13 @@
 
 </template>
 
+<template name="user_chart_formatter">
+    <strong><h4>{{ date_str }}</h4></strong><br />
+    {{#each points}}
+    	{{ series.name }}: {{bytes y}}<br />
+    {{/each}}
+</template>
+
 <template name="user">
 <div class="row padding-10">
     <div class="page-header">

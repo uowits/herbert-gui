@@ -11,6 +11,12 @@
     <li><a href="/user/{{username}}">{{username}}</a> - [{{bytes OffNetUsage}}]</li>
 </template>
 
+<template name="dashboard_chart_formatter">
+	<strong><h4>{{ series.name }}</h4></strong><br />
+	{{ point.day }}<br />
+	{{ x }}<br />
+	{{ bytes y}} <br />
+</template>
 
 <template name="dashboard">
 <div class="row padding-10">

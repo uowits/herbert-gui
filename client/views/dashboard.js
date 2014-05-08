@@ -4,7 +4,6 @@
 Router.map(function() {
     this.route('dashboard', {
         path: '/',
-
         onBeforeAction: function() {
             this.subscribe('monthly_totals_for_year').wait();
             this.subscribe('this_weeks_usage').wait();
@@ -12,7 +11,6 @@ Router.map(function() {
             this.subscribe('today_usage_totals').wait();
             this.subscribe('weekly_top_users').wait();
         },
-
         data: function() {
             var data;
             var router = this.router;
@@ -56,7 +54,6 @@ Router.map(function() {
     })
 })
 
-
 //Some helpers for formatting the values
 Template.totalValues.community = function() {
     switch(this.community) {
@@ -70,12 +67,15 @@ Template.totalValues.community = function() {
     return this.community
 }
 Template.totalValues.traffic = function() {
-//        return this.bytes;
     return this.bytes
 }
 Template.weeklyTopUser.OffNetUsage = function() {
     return this.communities['58698:102'];
 }
+
+var toHTMLWithData = function (kind, data) {
+  return UI.toHTML(kind.extend({data: function () { return data; }}));
+};
 
 //Attach the rendering of the 30 day chart
 Template.dashboard_30days.rendered = function() {
@@ -115,11 +115,7 @@ Template.dashboard_30days.rendered = function() {
             }],
             tooltip: {
                 formatter: function() {
-                    to_return = "<strong><h4>" + this.series.name + "</h4></strong><br />"
-                    to_return += this.point.day + "<br />"
-                    to_return += this.x + "<br />"
-                    to_return += readablizeBytes(this.y) + "<br />";
-                    return to_return;
+                	return toHTMLWithData(Template.dashboard_chart_formatter, this);
                 }
             },
             credits: {
