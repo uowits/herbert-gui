@@ -33,16 +33,18 @@ Meteor.publish("yearly_usage_totals", function() {
 
 Meteor.publish("monthly_usage_totals", function(year) {
     if( accessCheck(this) ) return;
+	console.log("monthly_usage_totals: "+year);
     var date_start = moment(year + "-01-01T00Z");
-    var date_finish = date_start.add('years', 1)
-    return MonthlyTotals.find({ date: {$lt: date_finish.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
+    var date_end = date_start.add('years', 1)
+    return MonthlyTotals.find({ date: {$lt: date_end.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
 });
 
 Meteor.publish("daily_usage_totals", function(year, month) {
     if( accessCheck(this) ) return;
-    var start_date = moment(year + "-" + month + "-" + "01T00Z")
-    var end_date = start_date.add('month', 1);
-    return DailyTotals.find({ date: {$lt: end_date.toDate(), $gte: start_date.toDate()}}, {sort: {date: 1}});
+	console.log("daily_usage_totals: "+year+"-"+month);
+    var date_start = moment(year + "-" + month + "-01T00Z")
+    var date_end = start_date.add('month', 1);
+    return DailyTotals.find({ date: {$lt: date_end.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
 });
 
 /*
@@ -84,18 +86,21 @@ Meteor.publish('user_all_daily_traffic', function(username) {
 
 Meteor.publish("yearly_user_report", function(year) {
     if( accessCheck(this) ) return;
+	console.log("yearly_user_report: "+year);
     var date = moment(year + "-01-01T00Z").toDate();
     return UserYearlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
 });
 
 Meteor.publish("monthly_user_report", function(year, month) {
     if( accessCheck(this) ) return;
+	console.log("monthly_user_report: "+year+"-"+month);
     var date = moment(year + "-" + month + "-01T00Z").toDate();
     return UserMonthlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
 });
 
 Meteor.publish("daily_user_report", function(year, month, day) {
     if( accessCheck(this) ) return;
+	console.log("daily_user_report: "+year+"-"+month+"-"+day);
     var date = moment(year + "-" + month + "-" + day + "T00Z").toDate();
     return UserDailyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
 });
