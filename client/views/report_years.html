@@ -18,7 +18,7 @@
         <tbody>
             {{#each totals}}
             <tr>
-                <td><a href="{{pathFor 'report_months'}}">{{year}}</a></td>
+                <td><a href="{{pathFor 'report_months' year=year}}">{{year}}</a></td>
                 <td>{{bytes local}}</td>
                 <td>{{bytes onnet}}</td>
                 <td>{{bytes offnet}}</td>
