@@ -78,6 +78,7 @@ var toHTMLWithData = function (kind, data) {
 };
 
 //Attach the rendering of the 30 day chart
+var chartRenderHandle;
 Template.dashboard_30days.rendered = function() {
     if(! $('#dailytraffic').highcharts() ) {
         $('#dailytraffic').highcharts({
@@ -124,7 +125,7 @@ Template.dashboard_30days.rendered = function() {
         });
     }
     //The chart is already displayed. Time to update it with some data
-    Deps.autorun(function() {
+    chartRenderHandle = Deps.autorun(function() {
         var months_daily_totals = DailyTotals.find({}, {sort: {date: 1}});
         on_net = [];
         off_net = [];
@@ -158,3 +159,7 @@ Template.dashboard_30days.rendered = function() {
     });
 }
 
+Template.dashboard_30days.destroyed = function() {
+	if(chartRenderHandle)
+		chartRenderHandle.stop();
+}

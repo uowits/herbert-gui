@@ -63,6 +63,7 @@ Template.user_chart_formatter.date_str = function() {
 	return moment(this.points[0].x).format('dddd MMMM Do YYYY');
 }
 
+var chartRenderHandle;
 Template.user_traffic_graph.rendered = function() {
     data = []
 
@@ -106,7 +107,7 @@ Template.user_traffic_graph.rendered = function() {
         });
     }
 
-    Deps.autorun(function() {
+    chartRenderHandle = Deps.autorun(function() {
         //The chart is already displayed. Time to update it with some data
         on_net = [];
         off_net = [];
@@ -129,4 +130,9 @@ Template.user_traffic_graph.rendered = function() {
             data: off_net
         });
     });
+}
+
+Template.user_traffic_graph.destroyed = function() {
+	if(chartRenderHandle)
+		chartRenderHandle.stop()
 }

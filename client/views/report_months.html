@@ -18,7 +18,7 @@
         <tbody>
             {{#each totals}}
             <tr>
-                <td><a href="{{pathFor 'report_days' month=month}}">{{shortdate}}</a></td>
+                <td><a href="{{pathFor 'report_days' year=year month=month}}">{{date}}</a></td>
 	                <td>{{bytes local}}</td>
 	                <td>{{bytes onnet}}</td>
 	                <td>{{bytes offnet}}</td>

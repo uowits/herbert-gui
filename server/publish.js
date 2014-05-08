@@ -26,22 +26,23 @@ Meteor.publish('30day_usage', function() {
     return DailyTotals.last30days();
 });
 
-Meteor.publish("monthly_usage_totals", function(year) {
-    if( accessCheck(this) ) return;
-    var date_start = moment(year + "-01-01T00Z").toDate();
-    var date_finish = moment(date_start).add('years', 1).toDate();
-    return MonthlyTotals.find({ date: {$lt: date_finish, $gte: date_start}}, {sort: {date: 1}});
-});
-
 Meteor.publish("yearly_usage_totals", function() {
     if( accessCheck(this) ) return;
     return YearlyTotals.find({}, {sort: {date: -1}});
 });
 
-Meteor.publish("daily_usage_totals", function(start_date) {
+Meteor.publish("monthly_usage_totals", function(year) {
     if( accessCheck(this) ) return;
-    end_date = moment(start_date).add('month', 1).toDate();
-    return DailyTotals.find({ date: {$lt: end_date, $gte: start_date} }, {sort: {date: 1}});
+    var date_start = moment(year + "-01-01T00Z");
+    var date_finish = date_start.add('years', 1)
+    return MonthlyTotals.find({ date: {$lt: date_finish.toDate(), $gte: date_start.toDate()}}, {sort: {date: 1}});
+});
+
+Meteor.publish("daily_usage_totals", function(year, month) {
+    if( accessCheck(this) ) return;
+    var start_date = moment(year + "-" + month + "-" + "01T00Z")
+    var end_date = start_date.add('month', 1);
+    return DailyTotals.find({ date: {$lt: end_date.toDate(), $gte: start_date.toDate()}}, {sort: {date: 1}});
 });
 
 /*
@@ -50,7 +51,7 @@ Meteor.publish("daily_usage_totals", function(start_date) {
 
 Meteor.publish('weekly_top_users', function() {
     if( accessCheck(this) ) return;
-    week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
+    var week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
     return UserWeeklyTotals.find( {'date': week_start}, {sort: {'communities.58698:102': -1}, limit: 20} )
 })
 

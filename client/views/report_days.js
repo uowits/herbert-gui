@@ -18,12 +18,20 @@ Template.report_days.totals = function() {
 	return DailyTotals.find({}, {sort: {date: 1}});
 }
 	
-Template.report_days.smalldate = function() {
+Template.report_days.date = function() {
     return moment(this.date).format("ddd, MMM Do YYYY");
 }
 
-Template.report_days.dateurl = function() {
-    return moment(this.date).format("YYYY-MM-DD");
+Template.report_days.day = function() {
+	return moment(this.date).format("DD");
+}
+
+Template.report_days.month = function() {
+	return moment(this.date).format("MM");
+}
+
+Template.report_days.year = function() {
+	return moment(this.date).format("YYYY");
 }
 
 Template.report_days.local = function() {

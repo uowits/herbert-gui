@@ -16,12 +16,16 @@ Template.report_months.totals = function() {
 	return MonthlyTotals.find({}, {sort: {date: 1}});
 }
 
-Template.report_months.shortdate = function() {
+Template.report_months.date = function() {
     return moment(this.date).format("MMMM");
 }
 
-Template.report_months.dateurl = function() {
-    return moment(this.date).format("YYYY-MM");
+Template.report_months.month = function() {
+	return moment(this.date).format("MM");
+}
+
+Template.report_months.year = function() {
+	return moment(this.date).format("YYYY");
 }
 
 Template.report_months.local = function() {
