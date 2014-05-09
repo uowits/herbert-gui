@@ -1,54 +1,29 @@
 <template name="layout">
 	<body>
 	    <div id="wrapper">
-	        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+	        <div class="navbar navbar-default navbar-static-top">
 	            <div class="navbar-header">
-	                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-	                    <span class="sr-only">Toggle navigation</span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                    <span class="icon-bar"></span>
-	                </button>
-	                <a class="navbar-brand" href="/">Internet Usage Report</a>
+	                <a class="navbar-brand" href="/">Internet Usage</a>
 	            </div>
-	            <!-- /.navbar-header -->
-	
-	            <ul class="nav navbar-top-links navbar-right">
-		            {{> layout_alerts}}
-				    <li class="dropdown">
-				        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-				        </a>
-				        <ul class="dropdown-menu dropdown-user">
-				            <li>
-				            {{> loginButtons}}
-				            </li>
-				        </ul>
-				        <!-- /.dropdown-user -->
-				    </li>
-				    <!-- /.dropdown -->
-
-	            </ul>
-	            <!-- /.navbar-top-links -->
-	
-	        </nav>
-	        <!-- /.navbar-static-top -->
+	            <div class="navbar-collapse collapse">
+	            	<ul class="nav navbar-nav">
+	            	</ul>
+		            <ul class="nav navbar-nav navbar-right">
+		            	<!-- NYI -->
+			            <!-- {{> layout_alerts}} -->
+			            
+					    {{> loginButtons}}
+		            </ul>
+	            </div>	
+	        </div>
 			
-            {{> layout_navbar}}            
+            {{> layout_navbar}}
 	
 	        <div id="page-wrapper">
-	            <div class="row">
-                    {{> yield}}
-	            </div>
-	            <!-- /.row -->
+                {{> yield}}
 	        </div>
-	        <!-- /#page-wrapper -->
 	    </div>
-	    <!-- /#wrapper -->
 	</body>
-</template>
-<template name="login">
-Login template wtf
 </template>
 
 <template name="layout_navbar">
