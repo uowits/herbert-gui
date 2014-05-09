@@ -9,6 +9,7 @@ Router.onBeforeAction( function (pause) {
   			!("public" in Meteor.settings &&
   				Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0))) {
     this.layout("layout_noaccess")
+    this.render("layout_noaccess_noaccess")
     pause();
   } else {
 	this.layout("layout")
@@ -17,4 +18,6 @@ Router.onBeforeAction( function (pause) {
 
 Router.configure({
 	layoutTemplate: 'layout',
+	notFoundTemplate: 'not_found',
+	loadingTemplate: 'loading'
 })

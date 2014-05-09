@@ -1,12 +1,14 @@
 <template name="layout">
 	<body>
-	    <div id="wrapper">
-	        <div class="navbar navbar-default navbar-static-top">
+        <div class="navbar navbar-default" role="navigation">
+        	<div class="container-fluid">
 	            <div class="navbar-header">
 	                <a class="navbar-brand" href="/">Internet Usage</a>
 	            </div>
 	            <div class="navbar-collapse collapse">
 	            	<ul class="nav navbar-nav">
+	            		<li class="{{active 'dashboard'}}"><a href="{{pathFor 'dashboard'}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+						<li class="{{active 'report'}}"><a href="{{pathFor 'report_years'}}"><i class="fa fa-table fa-fw"></i> Reports</a></li>
 	            	</ul>
 		            <ul class="nav navbar-nav navbar-right">
 		            	<!-- NYI -->
@@ -14,53 +16,59 @@
 			            
 					    {{> loginButtons}}
 		            </ul>
+		            <form class="navbar-form navbar-right user-search">
+		            	<input type="text" class="form-control" placeholder="User lookup...">
+		            </form>
 	            </div>	
 	        </div>
-			
-            {{> layout_navbar}}
-	
-	        <div id="page-wrapper">
-                {{> yield}}
-	        </div>
-	    </div>
+        </div>
+
+        <div class="container-fluid">
+            {{> yield}}
+        </div>
 	</body>
 </template>
 
-<template name="layout_navbar">
-    <nav class="navbar-default navbar-static-side" role="navigation">
-        <div class="sidebar-collapse">
-            <ul class="nav" id="side-menu">
-                <li class="sidebar-search">
-                    <form name="user_form" id="user_form">
-                        <div class="input-group custom-search-form">
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Username...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" id="submit" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-                    <!-- /input-group -->
-                </li>
-                <li>
-                    <a href="{{pathFor 'dashboard'}}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-table fa-fw"></i> Reports<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="{{pathFor 'report_years'}}">Traffic Usage Reports</a>
-                        </li>
-                    </ul>
-                    <!-- /.nav-second-level -->
-                </li>
-            </ul>
-            <!-- /#side-menu -->
+<template name="layout_noaccess">
+	<body>
+        <div class="navbar navbar-default" role="navigation">
+        	<div class="container-fluid">
+	            <div class="navbar-header">
+	                <a class="navbar-brand" href="/">Internet Usage</a>
+	            </div>
+	            <div class="navbar-collapse collapse">
+		            <ul class="nav navbar-nav navbar-right">
+					    {{> loginButtons}}
+		            </ul>
+	            </div>	
+	        </div>
         </div>
-        <!-- /.sidebar-collapse -->
-    </nav>
-    <!-- /.navbar-static-side -->
+
+        <div class="container-fluid">
+			{{> yield}}
+        </div>
+	</body>
+</template>
+
+<template name="layout_noaccess_noaccess">
+	<div class="span12 text-center" style="padding-top: 90px">
+	    <i class="fa fa-lock fa-6" style="font-size:20em"></i>
+	    <p>You must be logged in and have been granted the appropriate permission to view this page</p>
+	</div>
+</template>
+
+<template name="not_found">
+	<div class="text-center" style="padding-top: 90px">
+	    <i class="fa fa-question-circle" style="font-size:20em"></i>
+	    <p>We couldn't find the page you were trying to access.</p>
+	</div>
+</template>
+
+<template name="loading">
+	<div class="text-center" style="padding-top: 90px">
+	    <i class="fa fa-refresh" style="font-size:20em"></i>
+	    <p>Loading, one moment please.</p>
+	</div>
 </template>
 
 <template name="layout_alerts">

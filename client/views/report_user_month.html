@@ -1,32 +1,29 @@
 <template name="report_user_month">
-	<div class="row padding-10">
-	    <div class="page-header">
-	        <h2>User Traffic Breakdown <small>For {{date_pretty}}</small></h2>
-	    </div>
-	
-	    <table class="table table-striped">
-	        <thead>
-	            <tr>
-	                <th>Username</th>
-	                <th>Local</th>
-	                <th>On-Net</th>
-	                <th>Off-Net</th>
-	                <th>Total</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            {{#each totals}}
-	            <tr>
-	                <td><a href="{{pathFor 'user'}}">{{username}}</a></td>
-	                <td>{{displayBytes local}}</td>
-	                <td>{{displayBytes onnet}}</td>
-	                <td>{{displayBytes offnet}}</td>
-	                <td>{{displayBytes total}}</td>
-	            </tr>
-	            {{/each}}
-	        </tbody>
-	    </table>
-	    <p>ToDo:  Scrolling load</p>
-	</div>
+    <div class="page-header">
+        <h2>User Traffic Breakdown <small>For {{date_pretty}}</small></h2>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Local</th>
+                <th>On-Net</th>
+                <th>Off-Net</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each totals}}
+            <tr>
+                <td><a href="{{pathFor 'user'}}">{{username}}</a></td>
+                <td>{{displayBytes local}}</td>
+                <td>{{displayBytes onnet}}</td>
+                <td>{{displayBytes offnet}}</td>
+                <td>{{displayBytes total}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </template>
 

@@ -35,6 +35,9 @@ Router.map(function() {
             var todays_monthly_totals_obj = UserMonthlyTotals.findOne({}, {sort: {date: -1}});
             var todays_monthly_totals = todays_monthly_totals_obj ? todays_monthly_totals_obj.communities : []
             
+            if(!todays_monthly_totals_obj)
+            	return;
+            
             var data ={
                 username: username,
                 yearlyTotal: _.map(monthly_comm_totals, function(val,key){return {community: key, bytes: val}}),

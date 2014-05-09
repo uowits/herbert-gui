@@ -1,27 +1,15 @@
 
-Template.layout_navbar.events({
-	'submit #user_form': function(event, template) {
+Template.layout.events({
+	'submit form.user-search': function(event, template) {
         event.preventDefault();
-        Router.go('user', {username: $(template.find("#username")).val()});
+        Router.go('user', {username: $(template.find("input")).val()});
 	}
 })
 
-Template.layout.rendered = function() {
-	$(function() {
-	    $('#side-menu').metisMenu();
-	});
-	
-	//Loads the correct sidebar on window load,
-	//collapses the sidebar on window resize.
-	$(function() {
-	    $(window).bind("load resize", function() {
-	        //console.log($(this).width())
-	        if ($(this).width() < 768) {
-	            $('div.sidebar-collapse').addClass('collapse')
-	        } else {
-	            $('div.sidebar-collapse').removeClass('collapse')
-	        }
-	    })
-	})
-	
-}
+Template.layout.helpers({
+  "active": function(name) {
+    if(Router.current() && Router.current().route.name.split('_')[0] == name) {
+      return "active";
+    }
+  }
+});
