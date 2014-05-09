@@ -1,9 +1,8 @@
 <template name="report_user_year">
     <div class="page-header">
-        <h2>User Traffic Breakdown <small>For {{year}}</small></h2>
+        <h2>User Traffic Breakdown <small>For {{year}}</small>{{> downloadReport}}</h2>
     </div>
 
-    {{> downloadReport}}
 
     <table class="table table-striped">
         <thead>
