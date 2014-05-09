@@ -9,11 +9,14 @@ Router.map( function() {
 				'year': this.params.year,
 				'month': this.params.month,
 				'day': this.params.day,
-                'date': moment(this.params.date).format("dddd, MMMM Do, YYYY")
 			}
 		}
 	})
 });
+
+Template.report_user_day.date_pretty = function() {
+	return moment.utc([this.year, this.month-1, this.day]).format("dddd, MMMM Do, YYYY")
+}
 
 Template.report_user_day.totals = function() {
 	return UserDailyTotals.find();

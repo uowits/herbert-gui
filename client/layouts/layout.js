@@ -7,7 +7,6 @@ Template.layout_navbar.events({
 })
 
 Template.layout.rendered = function() {
-
 	$(function() {
 	    $('#side-menu').metisMenu();
 	});

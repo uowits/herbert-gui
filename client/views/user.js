@@ -12,7 +12,6 @@ Router.map(function() {
         },
 
         data: function() {
-            //            debugger;
             var username = this.params.username;
 
             //Perform an aggregate for year to date by adding up all the months
@@ -50,6 +49,19 @@ Router.map(function() {
         }	
     })
 })
+
+//Some helpers for formatting the values
+Template.user_value.community = function() {
+    switch(this.community) {
+        case "58698:100":
+            return "Local";
+        case "58698:101":
+            return "ON-NET"
+        case "58698:102":
+            return "OFF-NET"
+    }
+    return this.community
+}
 
 Template.user_throttling_controls.throttleMethods = function() {
     return _.map(Meteor.settings.public.throttle_methods, function(val, key) { return {item: key, description: val} })

@@ -1,14 +1,5 @@
-UI.registerHelper('userGood', function() {
-    if(!Meteor.userId()) {
-        return false;
-    }
-    if(Meteor.user() && Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0) {
-        return true;
-    }
-    return false;
-})
 
-UI.registerHelper('bytes', function(bytes) {
+UI.registerHelper('displayBytes', function(bytes) {
 	if(!bytes)
 		return "";
 	

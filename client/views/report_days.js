@@ -1,7 +1,6 @@
 Router.map( function() {
 	this.route('report_days', {
 		path: '/report-totals/:year/:month',
-	
 		waitOn: function() {
 			return Meteor.subscribe('daily_usage_totals', this.params.year, this.params.month)
         },
@@ -20,6 +19,10 @@ Template.report_days.totals = function() {
 	
 Template.report_days.date = function() {
     return moment(this.date).format("ddd, MMM Do YYYY");
+}
+
+Template.report_days.date_pretty = function() {
+	return moment(this.date).format("MMM, YYYY");
 }
 
 Template.report_days.day = function() {

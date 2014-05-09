@@ -4,12 +4,14 @@ Router.onBeforeAction( function (pause) {
     return;
   }
 
-  if (!Meteor.userId() || (Meteor.user() && !("public" in Meteor.settings && Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0))) {
+  if (!Meteor.userId() ||
+  		(Meteor.user() &&
+  			!("public" in Meteor.settings &&
+  				Meteor.settings.public.access.indexOf(Meteor.user().profile.name) >= 0))) {
     this.layout("layout_noaccess")
-    //this.render('login');
     pause();
   } else {
-	this.router.layout("layout")
+	this.layout("layout")
   }
 });
 

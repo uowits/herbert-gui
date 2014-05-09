@@ -13,8 +13,8 @@ Router.map( function() {
 	})
 });
 
-Template.report_user_month.shortdate = function() {
-    return moment(this.year + "-" + this.month + "-01T00Z").format('MMMM, YYYY');
+Template.report_user_month.date_pretty = function() {
+    return moment.utc([this.year, this.month-1]).format('MMMM, YYYY');
 }
 
 Template.report_user_month.totals = function() {

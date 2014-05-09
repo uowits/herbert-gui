@@ -1,7 +1,7 @@
 <template name="report_days">
 	<div class="row padding-10">
 	    <div class="page-header">
-	        <h2>Traffic Breakdown <small>For {{year}}-{{month}}</small></h2>
+	        <h2>Traffic Breakdown <small>For {{date_pretty}}</small></h2>
 	    </div>
 	
 	    <table class="table table-striped">
@@ -19,11 +19,11 @@
 	            {{#each totals}}
 	            <tr>
 	                <td><a href="{{pathFor 'report_user_day' year=year month=month day=day}}">{{date}}</a></td>
-	                <td>{{bytes local}}</td>
-	                <td>{{bytes onnet}}</td>
-	                <td>{{bytes offnet}}</td>
-	                <td>{{bytes unknown}}</td>
-	                <td>{{bytes total}}</td>
+	                <td>{{displayBytes local}}</td>
+	                <td>{{displayBytes onnet}}</td>
+	                <td>{{displayBytes offnet}}</td>
+	                <td>{{displayBytes unknown}}</td>
+	                <td>{{displayBytes total}}</td>
 	            </tr>
 	            {{/each}}
 	        </tbody>

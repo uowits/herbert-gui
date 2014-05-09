@@ -1,5 +1,3 @@
-//Dashboard.js
-
 
 Router.map(function() {
     this.route('dashboard', {
@@ -55,7 +53,7 @@ Router.map(function() {
 })
 
 //Some helpers for formatting the values
-Template.totalValues.community = function() {
+Template.dashboard_value.community = function() {
     switch(this.community) {
         case "58698:100":
             return "Local";
@@ -66,12 +64,6 @@ Template.totalValues.community = function() {
     }
     return this.community
 }
-Template.totalValues.traffic = function() {
-    return this.bytes
-}
-Template.weeklyTopUser.OffNetUsage = function() {
-    return this.communities['58698:102'];
-}
 
 var toHTMLWithData = function (kind, data) {
   return UI.toHTML(kind.extend({data: function () { return data; }}));
@@ -79,7 +71,7 @@ var toHTMLWithData = function (kind, data) {
 
 //Attach the rendering of the 30 day chart
 var chartRenderHandle;
-Template.dashboard_30days.rendered = function() {
+Template.dashboard_graph.rendered = function() {
     if(! $('#dailytraffic').highcharts() ) {
         $('#dailytraffic').highcharts({
             chart: {
@@ -159,7 +151,8 @@ Template.dashboard_30days.rendered = function() {
     });
 }
 
-Template.dashboard_30days.destroyed = function() {
+// make sure we stop the Deps.autorun() from running after we've torn down the graph
+Template.dashboard_graph.destroyed = function() {
 	if(chartRenderHandle)
 		chartRenderHandle.stop();
 }
