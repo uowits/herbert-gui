@@ -1,5 +1,8 @@
 <template name="dashboard_value">
-    <li><strong>{{community}}</strong><div class="pull-right">{{displayBytes bytes}}</div></li>
+	<tr>
+		<th>{{community}}</th>
+		<td class="text-right">{{displayBytes bytes}}</td>
+	</tr>
 </template>
 
 <template name="dashboard_graph">
@@ -7,7 +10,10 @@
 </template>
 
 <template name="dashboard_top_user">
-    <li><a href="{{pathFor 'user'}}">{{username}}</a> - [{{displayBytes communities.[58698:102]}}]</li>
+	<tr>
+    	<td><a href="{{pathFor 'user'}}">{{username}}</a></td>
+    	<td class="text-right">{{displayBytes communities.[58698:102]}}</td>
+	</tr>
 </template>
 
 <template name="dashboard_chart_formatter">
@@ -24,13 +30,13 @@
                 <i class="fa fa-info-circle fa-fw"></i>
                 {{title}}
             </div>
-            <div class="panel-body">
-                <ul class="no-bullet">
-                    {{#each values}}
-                        {{> dashboard_value}}
-                    {{/each}}
-                </ul>
-            </div>
+            <table class="table table-condensed">
+	            <tbody>
+	                {{#each values}}
+	                    {{> dashboard_value}}
+	                {{/each}}
+	            </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -46,7 +52,7 @@
         {{> dashboard_totals title="Traffic This Year" values=yearlyTotal}}
 	</div>
 	<div class="row">
-	    <div class="col-md-8">
+	    <div class="col-md-9">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i>
@@ -57,19 +63,19 @@
                 </div>
             </div>	
 	    </div>
-	    <div class="col-md-4">
+	    <div class="col-md-3">
 	        <div class="panel panel-default">
 	            <div class="panel-heading">
 	                <i class="fa fa-female fa-fw"></i>
 	                This Weeks Top 20 Users (Off-Net)
 	            </div>
-	            <div class="panel-body">
-	                <ul>
+	            <table class="table table-condensed">
+	            	<tbody>
 	                    {{#each weekly_top_user}}
 		                    {{> dashboard_top_user}}
 	                    {{/each}}
-	               </ul>
-	            </div>
+	               </tbody>
+	            </table>
 	        </div>
 	    </div>
 	</div>
