@@ -76,13 +76,14 @@ Template.user_chart_formatter.date_str = function() {
 }
 
 var chartRenderHandle;
-Template.user_traffic_graph.rendered = function() {
-    data = []
+Template.user_chart.rendered = function() {
+    var data = []
+    var $chart = $(this.find('.chart'))
 
-    if(! $('#user_traffic_graph').highcharts()) {
+    if(! $chart.highcharts()) {
 
         //The chart does not yet exist.  We need to create it
-        $('#user_traffic_graph').highcharts('StockChart', {
+        $chart.highcharts('StockChart', {
             rangeSelector : {
                 selected: 1
             },
@@ -133,7 +134,7 @@ Template.user_traffic_graph.rendered = function() {
             );
         });
 
-        var chart = $('#user_traffic_graph').highcharts();
+        var chart = $chart.highcharts();
 
         chart.series[0].update({
             data: on_net,
@@ -144,7 +145,7 @@ Template.user_traffic_graph.rendered = function() {
     });
 }
 
-Template.user_traffic_graph.destroyed = function() {
+Template.user_chart.destroyed = function() {
 	if(chartRenderHandle)
 		chartRenderHandle.stop()
 }

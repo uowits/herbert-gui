@@ -1,11 +1,11 @@
-<template name="user_traffic_graph">
-    <div id="user_traffic_graph" style="width:100%; height:400px;"></div>
-</template>
-
 <template name="user_value">
-    <li><strong>{{community}}</strong><div class="pull-right">{{displayBytes bytes}}</div></li>
+	<tr>
+		<th>{{community}}</th>
+		<td class="text-right">{{displayBytes bytes}}</td>
+	</tr>
 </template>
 
+<!-- currently unused - unimplemented -->
 <template name="user_throttling_controls">
     <div id="user_throttling_controls">
         <div class="page-header">
@@ -33,15 +33,19 @@
                 <i class="fa fa-info-circle fa-fw"></i>
                 {{title}}
             </div>
-            <div class="panel-body">
-                <ul class="no-bullet">
-                    {{#each values}}
-                        {{> user_value}}
-                    {{/each}}
-                </ul>
-            </div>
+            <table class="table table-condensed">
+	            <tbody>
+	                {{#each values}}
+	                    {{> user_value}}
+	                {{/each}}
+	            </tbody>
+            </table>
         </div>
     </div>
+</template>
+
+<template name="user_chart">
+    <div class="chart" style="width:100%; height:400px;"></div>
 </template>
 
 <template name="user_chart_formatter">
@@ -62,17 +66,18 @@
         {{> user_totals title="Traffic This Year" values=yearlyTotal}}
     </div>
 	<div class="row">
-	    <div class="col-md-8">
+	    <div class="col-md-12">
 	            <div class="panel panel-info">
 	                <div class="panel-heading">
 	                    <i class="fa fa-bar-chart-o fa-fw"></i>
 	                    Daily Traffic History (30 days)
 	                </div>
 	                <div class="panel-body">
-	                    {{> user_traffic_graph}}
+	                    {{> user_chart}}
 	                </div>
 	            </div>
 	    </div>
+	    <!--
 	    <div class="col-md-4">
 	            <div class="panel panel-primary">
 	                <div class="panel-heading">
@@ -84,6 +89,7 @@
 	                </div>
 	            </div>
 	    </div>
+	    -->
 	</div>
 </template>
 

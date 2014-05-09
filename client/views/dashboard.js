@@ -71,9 +71,11 @@ var toHTMLWithData = function (kind, data) {
 
 //Attach the rendering of the 30 day chart
 var chartRenderHandle;
-Template.dashboard_graph.rendered = function() {
-    if(! $('#dailytraffic').highcharts() ) {
-        $('#dailytraffic').highcharts({
+Template.dashboard_chart.rendered = function() {
+	var $chart = $(this.find('.chart'));
+	
+    if(! $chart.highcharts() ) {
+        $chart.highcharts({
             chart: {
                 type: 'area'
             },
@@ -139,7 +141,7 @@ Template.dashboard_graph.rendered = function() {
 
         })
 
-        var chart = $('#dailytraffic').highcharts();
+        var chart = $chart.highcharts();
 
         chart.xAxis[0].setCategories(categories);
         chart.series[0].update({
@@ -152,7 +154,7 @@ Template.dashboard_graph.rendered = function() {
 }
 
 // make sure we stop the Deps.autorun() from running after we've torn down the graph
-Template.dashboard_graph.destroyed = function() {
+Template.dashboard_chart.destroyed = function() {
 	if(chartRenderHandle)
 		chartRenderHandle.stop();
 }
