@@ -46,7 +46,7 @@ Router.map(function() {
                 }
                 router.setData(data);
             });   
-            
+
             return data;
         }	
     })
@@ -54,27 +54,38 @@ Router.map(function() {
 
 //Some helpers for formatting the values
 Template.dashboard_value.community = function() {
-    switch(this.community) {
-        case "58698:100":
-            return "Local";
-        case "58698:101":
-            return "ON-NET"
-        case "58698:102":
-            return "OFF-NET"
-    }
-    return this.community
+    var to_return = this.community
+    var community = this.community
+    Meteor.settings.public.communities.forEach(function(entry) {
+        if(entry['community'] == community)
+            to_return = entry['description']
+    });
+    return to_return;
 }
 
 var toHTMLWithData = function (kind, data) {
-  return UI.toHTML(kind.extend({data: function () { return data; }}));
+    return UI.toHTML(kind.extend({data: function () { return data; }}));
 };
 
 //Attach the rendering of the 30 day chart
 var chartRenderHandle;
 Template.dashboard_chart.rendered = function() {
-	var $chart = $(this.find('.chart'));
-	
+    var $chart = $(this.find('.chart'));
+
     if(! $chart.highcharts() ) {
+        //Builds a list of communities to be shown in this chart
+        var series = [];
+        Meteor.settings.public.communities.forEach(function(entry) {
+            var to_push = {
+                name: entry['description'],
+                data: [],
+            };
+            if(entry['chart-order'] != undefined) {
+                to_push['zIndex'] = entry['chart-order']
+            }
+            series.push(to_push)
+        })
+
         $chart.highcharts({
             chart: {
                 type: 'area'
@@ -100,61 +111,65 @@ Template.dashboard_chart.rendered = function() {
                 title: {
                     text: 'Data Consumed'
                 },
-           },
-            series: [{
-                name: 'On-Net',
-                data: []
-            }, {
-                name: 'Off-Net',
-                data: []
-            }],
+            },
+            series: series,
             tooltip: {
                 formatter: function() {
-                	return toHTMLWithData(Template.dashboard_chart_formatter, this);
+                    return toHTMLWithData(Template.dashboard_chart_formatter, this);
                 }
             },
             credits: {
                 enabled: false,
-            }
+            },
         });
     }
     //The chart is already displayed. Time to update it with some data
     chartRenderHandle = Deps.autorun(function() {
+        
         var months_daily_totals = DailyTotals.find({}, {sort: {date: 1}});
-        on_net = [];
-        off_net = [];
-        categories = []
 
+        //Build a dictionary of data usages based on the communities defined in the settings
+        var data_usage = {}
+        Meteor.settings.public.communities.forEach(function(entry) {
+            data_usage[entry['community']] = [];
+        });
+
+        //Walk through the data usage over the past 30 days.  Build our data_usage dicationary with the 'y' value
+        // on the chart being the data consumed for this category
+        dates = [];
         months_daily_totals.forEach(function(total) {
-
-            categories.push(moment(total.date).format("MMM Do YYYY"));
+            dates.push(moment(total.date).format("MMM Do YYYY"));
             var day_of_week = moment(total.date).format('dddd');
-            on_net.push( {
-                'y':  total.communities['58698:101'],
-                day: day_of_week,
 
+            Meteor.settings.public.communities.forEach(function(entry) {
+                entry = entry['community'];
+                var to_push = {day: day_of_week}
+                if(total.communities[entry] == undefined) {
+                    to_push['y'] = 0;
+                } else {
+                    to_push['y'] = total.communities[entry]
+                }
+                data_usage[entry].push(to_push)
             });
-            off_net.push( {
-                'y':  total.communities['58698:102'],
-                day: day_of_week,
-            })
-
         })
 
+        //Place the data dictionary elements we've collected and plot them on a chart
         var chart = $chart.highcharts();
-
-        chart.xAxis[0].setCategories(categories);
-        chart.series[0].update({
-            data: on_net,
-        });
-        chart.series[1].update({
-            data: off_net
-        });
+        var i = 0;
+        if(dates.length > 0) {
+            chart.xAxis[0].setCategories(dates);
+            for(var entry in data_usage) {
+                chart.series[i].update({
+                    data: data_usage[entry]
+                })
+                i += 1;
+            }            
+        }
     });
 }
 
 // make sure we stop the Deps.autorun() from running after we've torn down the graph
 Template.dashboard_chart.destroyed = function() {
-	if(chartRenderHandle)
-		chartRenderHandle.stop();
+    if(chartRenderHandle)
+        chartRenderHandle.stop();
 }

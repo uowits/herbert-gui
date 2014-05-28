@@ -1,6 +1,11 @@
 
 getTrafficTitles = function() {
-    return Meteor.settings.communities.map( function(el) {return el.description} );
+    return Meteor.settings.public.communities.map( function(el) {return el.description} );
+}
+
+getTopSortedCommunity = function() {
+    //Returns the Community that everything should be sorted by (ie. the top one on the list)
+    return Meteor.settings.public.communities[0]['community'];
 }
 
 communityValues = function(entry, return_totals) {

@@ -1,9 +1,4 @@
 {
-    "communities": [
-        {"description": "Local", "community": "58698:100"},
-        {"description": "On-Net", "community": "58698:101"},
-        {"description": "Off-Net", "community": "58698:102"}
-    ],
     "public": {
         "access": ["scotto", "dfs", "sdunster", "hdickson"],
         "throttle_methods": {
@@ -11,7 +6,12 @@
             "firewall": "Deny/Block all traffic",
             "throttleOff": "Throttle Off-Net to 128kbps",
             "throttleAll": "Throttle User to 128kbps"
-        }
+        },
+	    "communities": [
+	        {"description": "Off-Net", "community": "58698:102", "chart-order": 2},
+	        {"description": "On-Net", "community": "58698:101", "chart-order": 1},
+	        {"description": "Local", "community": "58698:100", "chart-order": 3}
+	    ]
     } 
 }
 

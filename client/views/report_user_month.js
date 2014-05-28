@@ -21,26 +21,6 @@ Template.report_user_month.totals = function() {
 	return UserMonthlyTotals.find()
 }
 
-Template.report_user_month.local = function() {
-    return this.communities['58698:100'];
-}
-
-Template.report_user_month.onnet = function() {
-    return this.communities['58698:101'];
-}
-
-Template.report_user_month.offnet = function() {
-    return this.communities['58698:102'];
-}
-
-Template.report_user_month.unknown = function() {
-	return "UNKNOWN" in this.communities ? this.communities['UNKNOWN'] : 0;
-}
-
-Template.report_user_month.total = function() {
-    var total = 0;
-    for(var index in this.communities) {
-        total += this.communities[index]
-    }
-    return total;
+Template.report_user_month.category = function() {
+    return this;
 }

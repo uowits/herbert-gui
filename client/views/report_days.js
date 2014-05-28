@@ -37,26 +37,7 @@ Template.report_days.year = function() {
 	return moment(this.date).format("YYYY");
 }
 
-Template.report_days.local = function() {
-    return this.communities['58698:100'];
+Template.report_days.category = function() {
+    return this;
 }
 
-Template.report_days.onnet = function() {
-    return this.communities['58698:101'];
-}
-
-Template.report_days.offnet = function() {
-    return this.communities['58698:102'];
-}
-
-Template.report_days.unknown = function() {
-	return "UNKNOWN" in this.communities ? this.communities['UNKNOWN'] : 0;
-}
-
-Template.report_days.total = function() {
-    var total = 0;
-    for(var index in this.communities) {
-        total += this.communities[index]
-    }
-    return total;
-}

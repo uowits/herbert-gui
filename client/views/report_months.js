@@ -28,26 +28,6 @@ Template.report_months.year = function() {
 	return moment(this.date).format("YYYY");
 }
 
-Template.report_months.local = function() {
-    return this.communities['58698:100'];
-}
-
-Template.report_months.onnet = function() {
-    return this.communities['58698:101'];
-}
-
-Template.report_months.offnet = function() {
-    return this.communities['58698:102'];
-}
-
-Template.report_months.unknown = function() {
-	return "UNKNOWN" in this.communities ? this.communities['UNKNOWN'] : 0;
-}
-
-Template.report_months.total = function() {
-    var total = 0;
-    for(var index in this.communities) {
-        total += this.communities[index]
-    }
-    return total;
+Template.report_months.category = function() {
+    return this;
 }

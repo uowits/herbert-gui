@@ -55,15 +55,13 @@ Router.map(function() {
 
 //Some helpers for formatting the values
 Template.user_value.community = function() {
-    switch(this.community) {
-        case "58698:100":
-            return "Local";
-        case "58698:101":
-            return "ON-NET"
-        case "58698:102":
-            return "OFF-NET"
-    }
-    return this.community
+    var to_return = this.community
+    var community = this.community
+    Meteor.settings.public.communities.forEach(function(entry) {
+        if(entry['community'] == community)
+            to_return = entry['description']
+    });
+    return to_return;
 }
 
 Template.user_throttling_controls.throttleMethods = function() {
@@ -84,6 +82,20 @@ Template.user_chart.rendered = function() {
     var $chart = $(this.find('.chart'))
 
     if(! $chart.highcharts()) {
+        
+        //Builds a list of communities/categories to be shown in this chart
+        var series = [];
+        Meteor.settings.public.communities.forEach(function(entry) {
+            var to_push = {
+                name: entry['description'],
+                type: 'column',
+                data: [],
+            };
+            if(entry['chart-order'] != undefined) {
+                to_push['zIndex'] = entry['chart-order']
+            }
+            series.push(to_push)
+        })
 
         //The chart does not yet exist.  We need to create it
         $chart.highcharts('StockChart', {
@@ -100,22 +112,7 @@ Template.user_chart.rendered = function() {
                 text: 'Users usage',
             },
 
-            series: [{
-                name: 'On-Net',
-                type: 'column',
-
-                data: [
-                ],
-                tooltip: {
-                    valueDecimals: 2
-                },
-            }, {
-                name: 'Off-Net',
-                type: 'column',
-
-                data: [
-                ],
-            }],
+            series: series,
             legend: {
                 enabled: true
             },
@@ -125,26 +122,42 @@ Template.user_chart.rendered = function() {
 
     chartRenderHandle = Deps.autorun(function() {
         //The chart is already displayed. Time to update it with some data
-        on_net = [];
-        off_net = [];
-            UserDailyTotals.find({}, {sort: {date: 1}}).forEach(function(total) {
-            time = total.date.getTime(); 
-            on_net.push(
-                [time, total.communities['58698:101']]
-            );
-            off_net.push(
-                [time, total.communities['58698:102']]
-            );
+        
+        var user_daily_totals = UserDailyTotals.find({}, {sort: {date: 1}});
+        
+        //Build a dictionary of data usages based on the communities defined in the settings
+        var data_usage = {}
+        Meteor.settings.public.communities.forEach(function(entry) {
+            data_usage[entry['community']] = [];
         });
-
+        
+        //Walk through the data usage over the past 30 days.  Build our data_usage dicationary with the 'y' value
+        // on the chart being the data consumed for this category
+        dates = [];
+        user_daily_totals.forEach(function(total) {
+            time = total.date.getTime();
+            
+            Meteor.settings.public.communities.forEach(function(entry) {
+                entry = entry['community'];
+                var to_push = [time]
+                if(total.communities[entry] == undefined) {
+                    to_push.push(0);
+                } else {
+                    to_push.push(total.communities[entry])
+                }
+                data_usage[entry].push(to_push)
+            });
+        });
+        
+        //Place the data dictionary elements we've collected and plot them on a chart
         var chart = $chart.highcharts();
-
-        chart.series[0].update({
-            data: on_net,
-        });
-        chart.series[1].update({
-            data: off_net
-        });
+        var i = 0;
+        for(var entry in data_usage) {
+            chart.series[i].update({
+                data: data_usage[entry]
+            })
+            i += 1;
+        }            
     });
 }
 

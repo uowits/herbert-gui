@@ -18,8 +18,9 @@ Router.map(function() {
                                         'Content-Disposition': "attachment; filename=test.csv",
                                     });
             this.response.write("Username," + getTrafficTitles() + ",Total\n");
-            var self =this;
-            UserYearlyTotals.find({date: selectDate}, {sort: {'communities.58698:102': -1}}).forEach(function (row) {
+            var self = this;
+            var sort_community = Meteor.settings.public.communities[0]['community'];
+            UserYearlyTotals.find({date: selectDate}, {sort: {sort_community: -1}}).forEach(function (row) {
                 var to_add = row['username'] +"," + communityValues(row.communities, true).join() + "\n";
                 self.response.write(to_add)
             });

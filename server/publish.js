@@ -52,7 +52,9 @@ Meteor.publish("daily_usage_totals", function(year, month) {
 Meteor.publish('weekly_top_users', function() {
     if( accessCheck(this) ) return;
     var week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
-    return UserWeeklyTotals.find( {'date': week_start}, {sort: {'communities.58698:102': -1}, limit: 20} )
+    var community = {}; community["communities." + getTopSortedCommunity()] = -1;
+    // debugger;
+    return UserWeeklyTotals.find( {'date': week_start}, {sort: community, limit: 20} )
 })
 
 Meteor.publish("user_monthly_totals_for_year", function(username) {
@@ -64,13 +66,6 @@ Meteor.publish("user_this_weeks_usage", function(username) {
     if( accessCheck(this) ) return;
     return UserWeeklyTotals.find({username: username}, { sort: {date: -1}, limit: 1 })
 });
-
-/*
-Meteor.publish('user_weekly_top_users', function() {
-    week_start = moment().zone(0).day(0).hour(0).minute(0).second(0).millisecond(0).toDate();
-    return UserWeeklyTotals.find( {'date': week_start}, {sort: {'communities.58698:102': -1}, limit: 20} )
-})
-*/
 
 Meteor.publish('user_30day_usage', function(username) {
     if( accessCheck(this) ) return;
@@ -85,18 +80,21 @@ Meteor.publish('user_all_daily_traffic', function(username) {
 Meteor.publish("yearly_user_report", function(year) {
     if( accessCheck(this) ) return;
     var date = moment.utc([year]).toDate();
-    return UserYearlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
+    var community = {}; community["communities." + getTopSortedCommunity()] = -1;
+    return UserYearlyTotals.find({date: date}, {sort: community, limit: 100});
 });
 
 Meteor.publish("monthly_user_report", function(year, month) {
     if( accessCheck(this) ) return;
     var date = moment.utc([year, month-1]).toDate();
-    return UserMonthlyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
+    var community = {}; community["communities." + getTopSortedCommunity()] = -1;
+    return UserMonthlyTotals.find({date: date}, {sort: community, limit: 100});
 });
 
 Meteor.publish("daily_user_report", function(year, month, day) {
     if( accessCheck(this) ) return;
     var date = moment.utc([year, month-1, day]).toDate();
-    return UserDailyTotals.find({date: date}, {sort: {'communities.58698:102': -1}, limit: 100});
+    var community = {}; community["communities." + getTopSortedCommunity()] = -1;
+    return UserDailyTotals.find({date: date}, {sort: community, limit: 100});
 });
 

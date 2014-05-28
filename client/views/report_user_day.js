@@ -21,27 +21,7 @@ Template.report_user_day.date_pretty = function() {
 Template.report_user_day.totals = function() {
 	return UserDailyTotals.find();
 }
-	
-Template.report_user_day.local = function() {
-    return this.communities['58698:100'];
-}
 
-Template.report_user_day.onnet = function() {
-    return this.communities['58698:101'];
-}
-
-Template.report_user_day.offnet = function() {
-    return this.communities['58698:102'];
-}
-
-Template.report_user_day.unknown = function() {
-	return "UNKNOWN" in this.communities ? this.communities['UNKNOWN'] : 0;
-}
-
-Template.report_user_day.total = function() {
-    var total = 0;
-    for(var index in this.communities) {
-        total += this.communities[index]
-    }
-    return total;
+Template.report_user_day.category = function() {
+    return this;
 }

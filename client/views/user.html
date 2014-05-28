@@ -51,7 +51,7 @@
 <template name="user_chart_formatter">
     <strong><h4>{{ date_str }}</h4></strong><br />
     {{#each points}}
-    	{{ series.name }}: {{bytes y}}<br />
+    	{{ series.name }}: {{displayBytes y}}<br />
     {{/each}}
 </template>
 

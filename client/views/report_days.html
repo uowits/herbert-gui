@@ -7,22 +7,19 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Local</th>
-                <th>On-Net</th>
-                <th>Off-Net</th>
-                <th>Unknown</th>
-                <th>Total</th>
+				{{#each categoriesWithTotals 'yes'}}
+					<th>{{category}}</th>
+				{{/each}}
             </tr>
         </thead>
         <tbody>
             {{#each totals}}
             <tr>
                 <td><a href="{{pathFor 'report_user_day' year=year month=month day=day}}">{{date}}</a></td>
-                <td>{{displayBytes local}}</td>
-                <td>{{displayBytes onnet}}</td>
-                <td>{{displayBytes offnet}}</td>
-                <td>{{displayBytes unknown}}</td>
-                <td>{{displayBytes total}}</td>
+				{{#each communitySummary communities 'yes'}}
+					<td>{{displayBytes communitySummaryBytes}}</td>
+				{{/each}}
+
             </tr>
             {{/each}}
         </tbody>
