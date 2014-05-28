@@ -13,7 +13,7 @@ var accessCheck = function(handle) {
 
 Meteor.publish("monthly_totals_for_year", function() {
     if( accessCheck(this) ) return;
-    return MonthlyTotals.yearlyTotals(2014);
+    return MonthlyTotals.yearlyTotals(moment().year());
 });
 
 Meteor.publish("this_weeks_usage", function() {
@@ -59,7 +59,7 @@ Meteor.publish('weekly_top_users', function() {
 
 Meteor.publish("user_monthly_totals_for_year", function(username) {
     if( accessCheck(this) ) return;
-    return UserMonthlyTotals.yearlyTotals(username, 2014);
+    return UserMonthlyTotals.yearlyTotals(username, moment().year());
 });
 
 Meteor.publish("user_this_weeks_usage", function(username) {
