@@ -1,0 +1,27 @@
+{
+  "name": "HerbertAdvert",
+  "version": "0.0.1",
+  "authors": [
+    "scott@scottyob.com"
+  ],
+  "description": "Website about Herbert Traffic Attributer",
+  "main": "index.html",
+  "keywords": [
+    "Herbert",
+    "Netflow",
+    "Traffic",
+    "Attribution"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1"
+  }
+}

@@ -1,0 +1,199 @@
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<title>Herbert Website</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<!-- build:css styles/vendor.css -->
+<!-- bower:css -->
+<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+<link href='http://fonts.googleapis.com/css?family=Maven+Pro' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Playfair+Display+SC' rel='stylesheet' type='text/css'>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:css(.tmp) styles/main.css -->
+<link rel="stylesheet" href="styles/site.css">
+<link rel="stylesheet" href="styles/alignment.css">
+
+<!-- endbuild -->
+</head>
+<body>
+<!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+<div class="navbar-wrapper">
+	<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+	    <div class="container">
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	                <span class="sr-only">Toggle navigation</span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	        </div>
+	        <div class="navbar-collapse collapse">
+	            <ul class="nav navbar-nav">
+	                <li><a href="index.html#about">About and Features</a></li>
+	                <li><a href="docs.html">Docs and Downloads</a></li>
+	            </ul>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<section class="main">
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="jumbotron">
+						<img src="images/Logo2.png" width="250px" />
+						<h1>An open source traffic accounting &amp; user attribution project</h1>
+						<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+</section>
+
+<section id="mainScreenshot" class="mainLogo text-center">
+	<img src="images/screenshot.jpg" />
+</section>
+
+<div class="breaker">
+	<h1 id="about" class="text-">About and Features</h1>
+</div>
+
+<section class="content container">
+	
+	<div class="row -row">
+		<div class="col-xs-6 ">
+			<h2>Traffic Breakdown</h2>
+			<p>
+				Enables simplistic views to see a breakdown in the types of traffic
+				and the users that consumed	that traffic.
+			</p>
+			<ul>
+				<li>Uses NetFlow to build traffic analysis</li>
+				<li>Attributes traffic to categories via BGP communities</li>
+				<li>Graphs the different type of traffic to help with traffic forecasting.</li>
+				<li>Every piece of data shown is updated in near real time</li>
+			</ul>
+		</div>
+		<div class="col-xs-6 ">
+			<img src="images/DailyReport.jpg" />
+		</div>
+	</div>
+	
+	<div class="row -row">
+		<div class="col-xs-6 ">
+			<img src="images/usertraffichistory.jpg" />
+		</div>
+		<div class="col-xs-6 ">
+			<h2>User Breakdown</h2>
+			<p>
+				See exactly who is using the traffic.
+			</p>
+			<ul>
+				<li>Breaks down traffic and shows top users in a dashboard</li>
+				<li>View traffic breakdown on day/month/year</li>
+				<li>Drill in on a user and see when they were consuming data</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="row -row">
+		<div class="col-xs-6 ">
+			<h2>Reports</h2>
+			<p>
+				Run reports for traffic used over certain time periods.  Quickly fire up a user report to see who
+				was responsible.
+			</p>
+			<ul>
+				<li>Shows reports for traffic breakdown based on BGP communities</li>
+				<li>Drill in from yearly/monthly/daily traffic</li>
+			</ul>
+		</div>
+		<div class="col-xs-6 ">
+			<img src="images/report.jpg" />
+		</div>
+	</div>
+
+	<div class="row -row">
+		<div class="col-sm-6 ">
+			<img src="images/technology.png" />
+		</div>
+		<div class="col-sm-6 ">
+			<h2>Technology</h2>
+			<p>
+				Project built on a foundation of open-source projects meaning it's 
+				pluggable and you can swap out and expand as desired.
+			</p>
+			<ul>
+				<li><a href="http://www.pmacct.net/">pmacct</a> is used for collecting NetFlow (and adding BGP stuff)</li>
+				<li><a href="https://www.rabbitmq.com/">RabbitMQ</a> is used as a message queue (for raw flows and user-auth feeds)</li>
+				<li><a href="http://www.mongodb.org">mongoDB</a> is the document storage database to keep track of counters</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="row -row">
+		<div class="col-sm-6 ">
+			<h2>Video</h2>
+			<p>
+				See the project in action.
+			</p>
+		</div>
+		<div class="col-sm-6 ">
+			<iframe width="480" height="350" src="//www.youtube.com/embed/uJ-n_GqA7Ag" frameborder="0" allowfullscreen></iframe>
+		</div>
+	</div>
+
+	
+
+	
+
+</section>
+
+
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+                                                        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+ e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+ e.src='//www.google-analytics.com/analytics.js';
+ r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+<!-- build:js scripts/plugins.js -->
+<script src="../bower_components/bootstrap/js/affix.js"></script>
+<script src="../bower_components/bootstrap/js/alert.js"></script>
+<script src="../bower_components/bootstrap/js/dropdown.js"></script>
+<script src="../bower_components/bootstrap/js/tooltip.js"></script>
+<script src="../bower_components/bootstrap/js/modal.js"></script>
+<script src="../bower_components/bootstrap/js/transition.js"></script>
+<script src="../bower_components/bootstrap/js/button.js"></script>
+<script src="../bower_components/bootstrap/js/popover.js"></script>
+<script src="../bower_components/bootstrap/js/carousel.js"></script>
+<script src="../bower_components/bootstrap/js/scrollspy.js"></script>
+<script src="../bower_components/bootstrap/js/collapse.js"></script>
+<script src="../bower_components/bootstrap/js/tab.js"></script>
+<!-- endbuild -->
+
+<!-- build:js({app,.tmp}) scripts/main.js -->
+<script src="scripts/main.js"></script>
+<!-- endbuild -->
+</body>
+</html>
