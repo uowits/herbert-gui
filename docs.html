@@ -1,0 +1,123 @@
+<html class=no-js><head><meta charset=utf-8><title>Herbert Website</title><meta name=description content=""><meta name=viewport content="width=device-width"><link rel="shortcut icon" href=/6df2b309.favicon.ico><!-- Place favicon.ico and apple-touch-icon.png in the root directory --><link rel=stylesheet href=styles/dfc57042.vendor.css><link rel=stylesheet href=styles/70831b1a.main.css><body><!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]--><div class=navbar-wrapper><div class="navbar navbar-inverse navbar-static-top" role=navigation><div class=container><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-collapse><span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span></button></div><div class="navbar-collapse collapse"><ul class="nav navbar-nav"><li><a href=index.html#about>About and Features</a></li><li><a href=#contact>Docs and Downloads</a></li></ul></div></div></div></div><section class=main-docs><header><div class=container><div><h1>Project Herbert Documentation</h1><p class=lead>Everything you should know about Project Herbert and Deployment instructions.</p></div><div class=row><div class=col-sm-8><h2>About</h2><p>Project Herbert is a traffic attribution and accounting tool. It is built on a bunch of open source tools to allow simple visibility into how much data you're using and who is using that data.</p><p>More information can be found on the landing <a href=index.html>About page</a></p><img src=images/16b5eb0c.Diagram.svg class=fit-parent-width><hr><h2 class=text-center>Dependencies</h2><h3>Design</h3><p>This project uses a base of open source tools. Although there are a number of dependencies to setup this project, the design goals were to make it such that this tool was very modular, meaning you can add and swap components of this system as you see fit. This system was designed to scale and you should have no problems deploying all these components as clusters to scale out where you need it.</p><p>At the heart of this project is a message queue. This can be a very powerful tool to expand on this project by attaching to exchanges on events like user authentication. We have for instance built add-ons that can block or throttle users where desired.</p><h3><a href=https://www.rabbitmq.com/features.html>RabbitMQ</a></h3><p>RabbitMQ is used as the message-broker of choice. It allows applications to connect to each other and provide a common platform for messages to be exchanged. RabbitMQ is used in this project to:</p><ul><li>Act as a buffer for 'unprocessed' netflows before we've had a chance to match a user up to them.</li><li>Allow the solution to be pluggable. All users-auth messages gets put into an exchange that you can attach queues to allowing you to add-on features without changing any of the code and config.</li></ul><h3><a href=http://www.mongodb.org>MongoDB</a></h3><p>MongoDB is used our data store. It was chosen because of the simplicity to index and shard the collections such that as this becomes the bottleneck, you can scale up the cluster.</p><h3><a href=http://www.pmacct.net>Pmacct</a></h3><p>the pmacct project was chosen because of the ability for it to receive BGP feeds. We use this for our traffic classification should it be desired. This utility has the ability to push the netflow messages into RabbitMQ.</p><h3>Netflow</h3><p>Netflow can be used to send flows for the traffic used along with all the L3 headers. Whilst we are using Netflow to do this traffic attribution it might be worth noting pmacct does support operating in either a bridge mode or on a port span.</p><hr><h2 class=text-center>Configuring Dependencies</h2><h3>RabbitMQ</h3><p>Nothing special needs to occur here. You can find the installation guide on the <a href=https://www.rabbitmq.com/download.html>RabbitMQ website</a>. After installing you just have to <a href=http://www.rabbitmq.com/man/rabbitmqctl.1.man.html#idp17662072>add a user</a> so that the app can access it</p><h3>MongoDB</h3><p>There are a few tips to the MongoDB install. Just follow the <a href="http://docs.mongodb.org/manual/installation/">appropriate MongoDB install guide</a> to build yourself a cluster. It is recommended that you install at least Mongo 2.6 for performance reasons.</p><p>A database is required to be created and you should <a href="http://docs.mongodb.org/manual/reference/method/db.addUser/">add a user</a> to access the counters from your applications. Once the application is running, to keep it fast, there are some indexes you can create using the following:</p><pre>
+db.user_daily_totals.ensureIndex( { username: "hashed" } )
+db.user_monthly_totals.ensureIndex( { username: "hashed" } )
+db.user_weekly_totals.ensureIndex( { username: "hashed" } )
+db.user_yearly_totals.ensureIndex( { username: "hashed" } )
+
+db.user_daily_totals.ensureIndex( { username: 1, date: 1 } )
+db.user_monthly_totals.ensureIndex( { username: 1, date: 1 } )
+db.user_weekly_totals.ensureIndex( { username: 1, date: 1 } )
+db.user_yearly_totals.ensureIndex( { username: 1, date: 1 } )
+
+db.daily_totals.ensureIndex( { date: 1 } )
+db.monthly_totals.ensureIndex( { date: 1 } )
+db.weekly_totals.ensureIndex( { date: 1 } )
+db.yearly_totals.ensureIndex( { date: 1 } )
+
+sh.shardCollection("herbert.user_yearly_totals", { username: "hashed" } )
+sh.shardCollection("herbert.user_weekly_totals", { username: "hashed" } )
+sh.shardCollection("herbert.user_monthly_totals", { username: "hashed" } )
+sh.shardCollection("herbert.user_daily_totals", { username: "hashed" } )
+					</pre><h3>pmacct</h3><p><a href=http://www.pmacct.net>Pmacct</a> is used to collect the netflow, attach the required BGP attributes then send it off to a queue in RabbitMQ so we can later marry these up with a user. I am using the following configuration file:</p><pre>
+!
+! pmacctd configuration example
+!
+! Did you know CONFIG-KEYS contains the detailed list of all configuration keys
+! supported by 'nfacctd' and 'pmacctd' ?
+!
+nfacctd_port: 2055
+daemonize: false
+
+aggregate: src_std_comm,src_host,dst_host,src_port,dst_port,timestamp_start,timestamp_end
+
+plugins: amqp
+amqp_exchange: raw_netflow
+amqp_exchange_type: fanout
+amqp_refresh_time: 2
+amqp_host: rabbitmq.somedomain.com
+amqp_user: herbert
+amqp_passwd: somePassword
+amqp_routing_key:
+
+plugin_pipe_size: 10240000
+plugin_buffer_size: 10240
+
+! BGP Information
+bgp_daemon: true
+bgp_agent_map: /usr/local/pmacct/etc/agent_to_peer.map
+bgp_daemon_pipe_size: 1310710
+nfacctd_as_new: bgp
+bgp_src_std_comm_type: bgp
+bgp_src_as_path_type: bgp
+					</pre><p>The agent_to_peer.map file is because in my setup I'm exporting my BGP data from a zebra/quagga instance where the source of this BGP information will be separate from the point I'm collecting Netflow from. Ultimately in my setup, I get BGP from our edge routers and collect netflow from a distribution point before NAT occurs. My agent_to_peer.map file ultimately looks like this where 130.130.218.6 is the box sending BGP into Pmacct and 10.25.0.1 is the id of the router sending netflow:</p><pre>id=130.130.218.6 ip=10.25.0.1</pre><h3>BGP and Netflow</h3><p>To export BGP into Pmacct, my quagga config looks like this. It should look the same from any IOS device though ( however you may wish to use route-maps to alter the BGP communities you send on.) Pmacct will automatically use the same ASN of the device that connects to it and receive iBGP only. My Quagga config looks like this:</p><pre>
+router bgp 64698
+ bgp router-id 130.130.218.6
+ neighbor 130.130.208.103 remote-as 64698
+ neighbor 130.130.208.103 description Herbert Remote Collector
+ neighbor 130.130.208.103 update-source 130.130.218.6
+ neighbor 130.130.208.103 route-reflector-client
+...
+!						
+					</pre><p>The netflow config I'm using (Note: I pass full netflow information right down to be stored in my MongoDB cluster for accountability purposes. You can always <a href="http://www.lancope.com/blog/always-use-mls-flow-ip-interfacefull-when-enabling-netflow-on-the-catalyst-/">lessen the load</a> by only sending a subset of these fields across.) 1.1.1.1 should be replaced with the pmacct netflow collector</p><pre>
+ip flow-cache timeout active 1
+mls netflow interface
+mls flow ip interface-full
+ip flow-export version 5
+ip flow-export destination 1.1.1.1 
+interface Te1/1.100
+  ! I am the interface going out to the border NAT Device.
+  ip flow ingress
+!
+					</pre><hr><h2 class=text-center>Configuring Herbert</h2><h3>user-auth</h3><p>The RabbitMQ user-auth exchange is used by the netflow-processor to keep a local cache of IP to user mappings. It should be used to push JSON messages once a user login event occurs somewhere on your network. We have a script used to pull down RADIUS logs with DHCP logs to pass the messages into this exchange. An example of the message to push into this exchange is:</p><pre>
+{
+	u'ip_address': u'10.64.72.10',
+	u'mac_address': u'd0:22:be:33:44:44',
+	u'method': u'acs',
+	u'timestamp': u'2014-05-15T15:40:51',
+	u'username': u'abc123'
+}</pre><h3><a href=https://github.com/uowits/herbert-user-auth-writer>herbert-user-auth-writer</a></h3><p>This little utility has one job. It's purpose is to take the user registrations from a queue attached to the user-auth exchange and write them to the mongo datastore. We do this so instances of the netflow-processor can look up who a flow belonged to and so we've got some history on it. The configuration file looks like this:</p><pre>
+amqp_server: rabbitmq.somedomain.com
+amqp_exchange: user_auth
+amqp_queue: herbert_auth_log
+amqp_username: herbert
+amqp_password: somePassword
+
+mongodb_server: mongodb.somedomain.com
+mongodb_database: herbert
+mongodb_auth_log_collection: auth_log
+mongodb_username: herbert
+mongodb_password: somePassword
+</pre><p>To deploy with python 2.7 just install pip and run 'pip -r requirements.txt'</p><h3><a href=https://github.com/uowits/herbert-netflow-processor>herbert-netflow-processor</a></h3><p>The netflow processor is responsible for taking the output of pmacct (that is, Netflow with BGP community information attached), matching the flow with a user and updating the counters for the appropriate document in MongoDB. The updates are cached in memory for a time and performed in bulk operations so it's recommended that you run Mongo 2.6 or greater to take advantage of the performance gain in bulk updates. The settings file looks something like this:</p><pre>
+amqp_server: rabbitmq.somedomain.com
+amqp_user_auth_exchange: user_auth
+amqp_raw_netflow_exchange: raw_netflow
+amqp_raw_netflow_queue: raw_netflow
+amqp_username: herbert
+amqp_password: somePassword
+
+mongodb_server: mongo.somedomain.com
+mongodb_database: herbert
+mongodb_username: herbert
+mongodb_password: somePassword
+
+forks: 10
+</pre><p>You should be aware that this process is capable of forking itself to process more flows concurrently. You can always run more than one instance across as many machines as you want for performance and redundancy.</p><p>To deploy with python 2.7 just install pip and run 'pip -r requirements.txt'</p><h3><a href=https://github.com/uowits/herbert-gui>Herbert Frontend</a></h3><p>The frontend is built on <a href=https://www.meteor.com>Meteor</a>, an open-source platform for building web-apps. This does mean you'll need to <a href="https://rtcamp.com/tutorials/nodejs/node-js-npm-install-ubuntu/">spin up a node server.</a> Once you have done that and installed npm you can install meteor by</p><pre>
+curl https://install.meteor.com | /bin/sh
+npm install meteorite
+cd /the/directory/you/have/the/frontend
+mrt bundle bundle.tgz
+tar -zxvf bundle.tgz
+</pre><p>To run the server you do. You may like to put this in an upstart script or however you prefer for your distro</p><pre>
+export METEOR_SETTINGS="$(cat /location/to/herbert/src/settings.json)"
+export ROOT_URL=http://herbertgui.somedomain.com
+export MONGO_URL=mongodb://herbert:somePassword@mongo.somedomain.com/herbert
+export PORT=80
+/usr/bin/node /location/to/gui/dist/main.js
+</pre></div><!-- /.blog-main --><div class="col-sm-3 col-sm-offset-1 blog-sidebar"><div class=sidebar-module><h4>Dependencies</h4><ul class=list-unstyled><li><a href=#design>Design</a></li><li><a href=#rabbitmq>RabbitMQ</a></li><li><a href=#mongodb>MongoDB</a></li><li><a href=#pmacct>Pmacct</a></li><li><a href=#netflow>NetFlow</a></li></ul><h4>Configuring</h4><ul class=list-unstyled><li><a href=#>RabbitMQ</a></li><li><a href=#>MongoDB</a></li><li><a href=#>Pmacct</a></li><li><a href=#>BGP</a></li><li><a href=#>Netflow</a></li><li><a href=#>User-Auth</a></li><li><a href=#>Auth-Writer</a></li><li><a href=#>Netflow-Processor</a></li><li><a href=#>Frontend</a></li></ul></div></div><!-- /.blog-sidebar --></div><!-- /.row --></div></header></section><script src=scripts/4776dee8.vendor.js></script><!-- Google Analytics: change UA-XXXXX-X to be your site's ID. --><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+                                                        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+ e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+ e.src='//www.google-analytics.com/analytics.js';
+ r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-XXXXX-X');ga('send','pageview');</script><script src=scripts/c6b52431.plugins.js></script><script src=scripts/b6c3df09.main.js></script>
